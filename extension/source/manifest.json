@@ -14,6 +14,7 @@
   "short_name": "Sample Name",
 
   "permissions": [
+    "tabs",
     "activeTab",
     "storage",
     "http://*/*",
@@ -70,6 +71,9 @@
     ],
     "js": [
       "js/contentScript.bundle.js"
+    ],
+    "css": [
+      "css/contentScript.css"
     ]
   }]
 }

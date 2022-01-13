@@ -1,0 +1,21 @@
+.locately-wrapper {
+  padding: 1rem;
+  border-radius: 5px;
+  box-shadow: 0 6px 20px -4px rgba(0, 0, 0, 0.1),
+    0 4px 12px -2px rgba(0, 0, 0, 0.08);
+  max-width: 400px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .locately-wrapper {
+    background: #333;
+    color: white;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  .locately-wrapper {
+    background: white;
+    color: #555;
+  }
+}
