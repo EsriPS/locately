@@ -6,6 +6,11 @@
   max-width: 400px;
 }
 
+*[data-locately-fips] {
+  border-bottom: 3px ridge dodgerblue;
+  cursor: context-menu;
+}
+
 @media (prefers-color-scheme: dark) {
   .locately-wrapper {
     background: #333;

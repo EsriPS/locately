@@ -3,8 +3,6 @@ import ReactDOM from "react-dom";
 
 import LocatelyPopover from "../LocatelyPopover";
 
-console.log("helloworld from content script");
-
 const mockLocation = {
   attributes: {
     ID: "0",
@@ -37,22 +35,18 @@ const mockLocation = {
 
 const LocatelyApp = () => {
   const [locationDetails, setLocationDetails] = useState(mockLocation);
-
   const [referenceElement, setReferenceElement] = useState(null);
 
   // Set up the locately popover events
   useEffect(() => {
     document.body.addEventListener("click", function (event) {
-      if (
-        event.target.attributes.getNamedItem("itemprop")?.value ===
-          "additionalName" ||
-        event.target.attributes.getNamedItem("itemprop")?.value === "name"
-      ) {
+      const locatelyFips = event.target.attributes.getNamedItem("data-locately-fips")?.value;
+      if (locatelyFips) {
         // Set the reference element to position popper
         setReferenceElement(event.target);
 
         // Get location details and call setLocationDetails
-        getDetailsForLocation(event.target.attributes.getNamedItem("fips"));
+        getDetailsForLocation(locatelyFips);
       } else {
         setReferenceElement(null);
       }
@@ -61,24 +55,49 @@ const LocatelyApp = () => {
 
   // Detect dom changes so we can search the text
   useEffect(() => {
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach(({ addedNodes }) => {
-        if (addedNodes?.length > 0) {
-          // Send nodes to be searched
-          getLocationsFromNodes(addedNodes);
-        }
-      });
-    });
+    // const domain = window.location.hostname;
+    // const el = document.querySelector(searchableElements[domain][0]);
+    getLocationsFromElements(document.body);
+    // const observer = new MutationObserver((mutations) => {
+    //   mutations.forEach(({ addedNodes }) => {
+    //     if (addedNodes?.length > 0) {
+    //       // Send nodes to be searched
+    //       console.log("do it again", addedNodes)
+    //       getLocationsFromElements(document.body);
+    //     }
+    //   });
+    // });
 
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true,
-    });
+    // observer.observe(document.body, {
+    //   childList: true,
+    //   subtree: true,
+    // });
   }, []);
 
   // Send nodes to be searched
-  const getLocationsFromNodes = async (nodes) => {
-    // Do the stuff
+  const getLocationsFromElements = async (contentRoot) => {
+    // Make request to get locations
+    const locations = [
+      {
+        text: "U.S.",
+        fips: "stuff"
+      },
+      {
+        text: "codylawson",
+        fips: "08013",
+      },
+      {
+        text: "Cody Lawson",
+        fips: "08015",
+      },
+    ];
+
+    // Transform those locations?
+    locations.forEach((location) => {
+      // Create regex for location
+      const locationRegex = new RegExp(`${location.text}`, "g");
+      transformDomWithLocations(contentRoot, locationRegex, location);
+    });
   };
 
   // Send locations to get geo-enriched
@@ -87,8 +106,77 @@ const LocatelyApp = () => {
   };
 
   // Update dom with data attributes
-  const transformDomWithLocations = (discoveredLocations) => {
+  const transformDomWithLocations = (contentRoot, locationRegex, location) => {
     // Do the stuff
+    const document = contentRoot.ownerDocument;
+
+    let nodes = [],
+      text = "",
+      node,
+      nodeIterator = document.createNodeIterator(
+        contentRoot,
+        NodeFilter.SHOW_TEXT,
+        null,
+        false
+      );
+
+    while ((node = nodeIterator.nextNode())) {
+      nodes.push({
+        textNode: node,
+        start: text.length,
+      });
+      text += node.nodeValue;
+    }
+
+    if (!nodes.length) return;
+
+    let match;
+    while ((match = locationRegex.exec(text))) {
+      const matchLength = match[0].length;
+
+      // Prevent empty matches causing infinite loops
+      if (!matchLength) {
+        locationRegex.lastIndex++;
+        continue;
+      }
+
+      for (let i = 0; i < nodes.length; ++i) {
+        node = nodes[i];
+        const nodeLength = node.textNode.nodeValue.length;
+
+        // Skip nodes before the match
+        if (node.start + nodeLength <= match.index) continue;
+
+        // Break after the match
+        if (node.start >= match.index + matchLength) break;
+
+        // Split the start node if required
+        if (node.start < match.index) {
+          nodes.splice(i + 1, 0, {
+            textNode: node.textNode.splitText(match.index - node.start),
+            start: match.index,
+          });
+          continue;
+        }
+
+        // Split the end node if required
+        if (node.start + nodeLength > match.index + matchLength) {
+          nodes.splice(i + 1, 0, {
+            textNode: node.textNode.splitText(
+              match.index + matchLength - node.start
+            ),
+            start: match.index + matchLength,
+          });
+        }
+
+        // Highlight the current node
+        const spanNode = document.createElement("span");
+        spanNode.setAttribute("data-locately-fips", location.fips);
+
+        node.textNode.parentNode.replaceChild(spanNode, node.textNode);
+        spanNode.appendChild(node.textNode);
+      }
+    }
   };
 
   return (
