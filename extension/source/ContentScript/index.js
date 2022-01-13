@@ -40,19 +40,56 @@ const LocatelyApp = () => {
 
   const [referenceElement, setReferenceElement] = useState(null);
 
+  // Set up the locately popover events
   useEffect(() => {
     document.body.addEventListener("click", function (event) {
       if (
         event.target.attributes.getNamedItem("itemprop")?.value ===
-        "additionalName" || event.target.attributes.getNamedItem("itemprop")?.value ===
-        "name"
+          "additionalName" ||
+        event.target.attributes.getNamedItem("itemprop")?.value === "name"
       ) {
+        // Set the reference element to position popper
         setReferenceElement(event.target);
+
+        // Get location details and call setLocationDetails
+        getDetailsForLocation(event.target.attributes.getNamedItem("fips"));
       } else {
         setReferenceElement(null);
       }
     });
   }, [setReferenceElement]);
+
+  // Detect dom changes so we can search the text
+  useEffect(() => {
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach(({ addedNodes }) => {
+        if (addedNodes?.length > 0) {
+          // Send nodes to be searched
+          getLocationsFromNodes(addedNodes);
+        }
+      });
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
+  }, []);
+
+  // Send nodes to be searched
+  const getLocationsFromNodes = async (nodes) => {
+    // Do the stuff
+  };
+
+  // Send locations to get geo-enriched
+  const getDetailsForLocation = async (fips) => {
+    // Do the stuff
+  };
+
+  // Update dom with data attributes
+  const transformDomWithLocations = (discoveredLocations) => {
+    // Do the stuff
+  };
 
   return (
     <LocatelyPopover
