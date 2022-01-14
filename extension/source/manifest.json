@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "name": "Sample WebExtension",
+  "name": "locately",
   "version": "0.0.0",
 
   "icons": {
@@ -9,9 +9,9 @@
     "48": "assets/icons/favicon-48.png",
     "128": "assets/icons/favicon-128.png"
   },
-  "description": "Sample description",
-  "homepage_url": "https://github.com/abhijithvijayan/web-extension-starter",
-  "short_name": "Sample Name",
+  "description": "A pocket atlas for your browser",
+  "homepage_url": "https://esrips.github.io/locately/",
+  "short_name": "locately",
 
   "permissions": [
     "tabs",

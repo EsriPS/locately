@@ -1,0 +1,90 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1, maximum-scale=1, user-scalable=no"
+    />
+    <title>locately map</title>
+
+    <style>
+      html,
+      body,
+      #mapView {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+
+    <link
+      rel="stylesheet"
+      href="https://js.arcgis.com/4.22/esri/themes/light/main.css"
+    />
+    <script src="https://js.arcgis.com/4.22/"></script>
+
+    <script>
+      require(["esri/config", "esri/Map", "esri/views/MapView"], function (
+        esriConfig,
+        Map,
+        MapView
+      ) {
+        // Set our ArcGIS Platform API Key
+        esriConfig.apiKey =
+          "AAPK96fad6978240451fa5592219e9a7686bgn2mig5Td0pYlUH0pC-yuPDe8Q0PGBh4SrJtFbt2Ue-h04k7xtNbB69gMD48OigO";
+
+        // Default center and zoom (in case no coords are passed in)
+        let zoom = 4;
+        let coords = {
+          x: -98,
+          y: 38,
+        };
+
+        // Get coords from the URL
+        const params = new URLSearchParams(window.location.search);
+        if (params.has("coords")) {
+          coords = JSON.parse(params.get("coords"));
+          zoom = 10;
+        }
+
+        // Construct a new JSAPI Map
+        const map = new Map({
+          // Use an ArcGIS Platform basemap service
+          basemap: "arcgis-navigation",
+        });
+
+        // Construct a new JSAPI MapView
+        const view = new MapView({
+          map,
+          center: [coords.x, coords.y],
+          zoom, // Zoom level
+          container: "mapView", // Div element
+        });
+
+        // Clean up the UI
+        view.ui.components = ["attribution"];
+
+        // Disable various methods of navigation
+        view.on("drag", (event) => {
+          event.stopPropagation();
+        });
+
+        view.on("mouse-wheel", (event) => {
+          event.stopPropagation();
+        });
+
+        view.on("double-click", (event) => {
+          event.stopPropagation();
+        });
+
+        view.on("double-click", ["Control"], (event) => {
+          event.stopPropagation();
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div id="mapView"></div>
+  </body>
+</html>
