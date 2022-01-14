@@ -25,11 +25,17 @@
     <script src="https://js.arcgis.com/4.22/"></script>
 
     <script>
-      require(["esri/config", "esri/Map", "esri/views/MapView"], function (
-        esriConfig,
-        Map,
-        MapView
-      ) {
+      require([
+        "esri/config",
+        "esri/Map",
+        "esri/views/MapView",
+        "esri/Graphic",
+        "esri/request",
+        "esri/core/watchUtils",
+      ], function (esriConfig, Map, MapView, Graphic, esriRequest, watchUtils) {
+        // Initialize global namespace
+        window.locately = {};
+
         // Set our ArcGIS Platform API Key
         esriConfig.apiKey =
           "AAPK96fad6978240451fa5592219e9a7686bgn2mig5Td0pYlUH0pC-yuPDe8Q0PGBh4SrJtFbt2Ue-h04k7xtNbB69gMD48OigO";
@@ -41,11 +47,70 @@
           y: 38,
         };
 
+        let city, state;
+
         // Get coords from the URL
         const params = new URLSearchParams(window.location.search);
         if (params.has("coords")) {
           coords = JSON.parse(params.get("coords"));
           zoom = 10;
+        }
+
+        if (params.has("city")) {
+          city = params.get("city");
+        }
+
+        if (params.has("state")) {
+          state = params.get("state");
+        }
+
+        console.log({ city, state });
+
+        /*
+         * Get a "Standard Geogaphy" object from ArcGIS to be used as studyAreas
+         */
+        const findStudyArea = async ({ city, state }) => {
+          const body = new FormData();
+          body.append("f", "json");
+          body.append("sourceCountry", "US");
+
+          body.append("geographyLayers", ["US.Places"]);
+          body.append(
+            "geographyQuery",
+            `${city} AND MajorSubdivisionAbbr:${state}`
+          );
+          body.append("returnGeometry", "true");
+          body.append("featureLimit", 1);
+
+          let url =
+            "https://geoenrich.arcgis.com/arcgis/rest/services/World/geoenrichmentserver/StandardGeographyQuery/execute";
+
+          const response = await esriRequest(url, {
+            method: "post",
+            body,
+            responseType: "json",
+          });
+          const feature = response?.data?.results[0]?.value?.features[0];
+
+          feature.geometry.type = "polygon";
+          feature.symbol = {
+            type: "simple-fill",
+            outline: { width: 1, color: [235, 55, 0, 1] },
+            color: [0, 0, 0, 0],
+          };
+
+          console.log(feature);
+
+          if (window.locately.mapView) {
+            // Create graphic
+            const graphic = new Graphic(feature);
+            window.locately.mapView.graphics.add(graphic);
+            console.log("added to the map!", graphic);
+          }
+        };
+
+        if (city && state) {
+          findStudyArea({ city, state });
         }
 
         // Construct a new JSAPI Map
@@ -60,6 +125,10 @@
           center: [coords.x, coords.y],
           zoom, // Zoom level
           container: "mapView", // Div element
+        });
+
+        view.when(function () {
+          window.locately.mapView = view;
         });
 
         // Clean up the UI
