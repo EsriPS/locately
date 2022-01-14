@@ -4,6 +4,12 @@
   box-shadow: 0 6px 20px -4px rgba(0, 0, 0, 0.1),
     0 4px 12px -2px rgba(0, 0, 0, 0.08);
   width: 400px;
+  background: #fafafa;
+  color: #1c2229;
+  overflow: hidden;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+  font-size: 13px;
+  line-height: 1.5;
 
   .locately-visual-row {
     display: flex;
@@ -13,14 +19,45 @@
       flex: 1 0 auto;
       height: 150px;
     }
+
+    .locately-map {
+      width: 250px;
+
+      iframe {
+        border: none;
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    .locately-img {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 150px;
+      position: relative;
+      overflow: hidden;
+
+      img {
+        flex: 1 0 auto;
+        height: 150px;
+        min-width: 150px;
+        min-height: 150px;
+      }
+    }
   }
 
   .locately-description {
-    padding: 10px;
+    padding: 10px 10px 5px;
+
+    .locately-attribution {
+      white-space: nowrap;
+    }
   }
 
   .locately-stats-row {
     display: flex;
+    font-weight: 600;
 
     .locately-stat {
       box-sizing: border-box;
@@ -28,34 +65,21 @@
       flex-direction: column;
       justify-content: space-between;
       text-align: center;
-      padding: 10px;
+      padding: 5px 10px;
 
       .locately-stat-label {
-        opacity: .8;
+        opacity: 0.6;
+        font-size: 12px;
       }
 
       .locately-stat-value {
-        font-size: 2rem;
+        font-size: 24px;
       }
     }
   }
 }
 
 *[data-locately-city] {
-  border-bottom: 3px ridge dodgerblue;
+  border-bottom: 3px ridge #1c2a88;
   cursor: context-menu;
-}
-
-@media (prefers-color-scheme: dark) {
-  .locately-wrapper {
-    background: #333;
-    color: white;
-  }
-}
-
-@media (prefers-color-scheme: light) {
-  .locately-wrapper {
-    background: white;
-    color: #555;
-  }
 }
