@@ -41,30 +41,30 @@
           "AAPK96fad6978240451fa5592219e9a7686bgn2mig5Td0pYlUH0pC-yuPDe8Q0PGBh4SrJtFbt2Ue-h04k7xtNbB69gMD48OigO";
 
         // Default center and zoom (in case no coords are passed in)
+        let city, state;
         let zoom = 4;
         let coords = {
           x: -98,
           y: 38,
         };
 
-        let city, state;
+        // Set the default map hyperlink
+        document.getElementById("mapLink").href =
+          "https://www.arcgis.com/apps/mapviewer/index.html";
 
         // Get coords from the URL
         const params = new URLSearchParams(window.location.search);
         if (params.has("coords")) {
           coords = JSON.parse(params.get("coords"));
-          // zoom = 10;
         }
 
-        if (params.has("city")) {
+        if (params.has("city") && params.has("state")) {
           city = params.get("city");
-        }
-
-        if (params.has("state")) {
           state = params.get("state");
-        }
 
-        console.log({ city, state });
+          const arcgisMapViewerUrl = `https://www.arcgis.com/apps/mapviewer/index.html?find=${city}, ${state}`;
+          document.getElementById("mapLink").href = arcgisMapViewerUrl;
+        }
 
         /*
          * Get a "Standard Geogaphy" object from ArcGIS to be used as studyAreas
@@ -106,7 +106,12 @@
             const graphic = new Graphic(feature);
             window.locately.mapView.graphics.add(graphic);
 
-            window.locately.mapView.goTo(graphic.geometry.extent.expand(1.1));
+            const extent = graphic.geometry.extent.expand(1.1);
+            window.locately.mapView.goTo(extent);
+
+            // NOTE: This will open the ArcGIS Online Map Viewer to the extent of the feature rather than using the 'find' parameter
+            // const arcgisMapViewerUrl = `https://www.arcgis.com/apps/mapviewer/index.html?extent=${extent.xmin},${extent.ymin},${extent.xmax},${extent.ymax}`;
+            // document.getElementById("mapLink").href = arcgisMapViewerUrl;
 
             console.log("added to the map!", graphic);
           }
@@ -157,6 +162,6 @@
     </script>
   </head>
   <body>
-    <div id="mapView"></div>
+    <a id="mapLink" target="_blank"><div id="mapView"></div></a>
   </body>
 </html>
