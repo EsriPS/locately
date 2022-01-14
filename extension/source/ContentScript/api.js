@@ -4,7 +4,6 @@ import {
   queryDemographicData,
 } from "@esri/arcgis-rest-demographics";
 
-import { Demographics } from "./dataCollections";
 import { places } from "./mockApi.json";
 
 // We'll use an ArcGIS Platform API Key to authenticate
@@ -49,7 +48,7 @@ const findStudyArea = async ({ city, state }) => {
 /*
  * Send Standard Geography to ArcGIS to be enriched
  */
-const enrich = async (studyArea) => {
+const enrich = async (studyArea, dataCollection) => {
   const feature = studyArea[0];
 
   // Assemble the `studyAreas` param
@@ -65,7 +64,7 @@ const enrich = async (studyArea) => {
   try {
     const response = await queryDemographicData({
       studyAreas,
-      analysisVariables: Demographics.variables,
+      analysisVariables: dataCollection.variables,
       authentication,
     });
 

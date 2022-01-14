@@ -65,6 +65,9 @@ const LocatelyPopover = ({
       case "INDEX":
         return attrs[name];
 
+      case "CURRENCY":
+        return `$${attrs[name]}`;
+
       default:
         if (renderer) {
           return renderer(attrs);

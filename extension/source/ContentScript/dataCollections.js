@@ -22,7 +22,7 @@ const Demographics = {
       name: "BACHDEG_CY",
       label: "Pop w/ Bachelors Degree",
       renderer: ({ BACHDEG_CY, EDUCBASECY }) => {
-        return `${Math.round((BACHDEG_CY/EDUCBASECY)*100)}%`;
+        return `${Math.round((BACHDEG_CY / EDUCBASECY) * 100)}%`;
       },
     },
   ],
@@ -49,14 +49,14 @@ const AtRisk = {
       name: "ACSHHBPOV",
       label: "Households Below Poverty",
       renderer: ({ ACSHHBPOV, ACSTOTHH }) => {
-        return `${(ACSHHBPOV / ACSTOTHH) * 100}%`;
+        return `${Math.round((ACSHHBPOV / ACSTOTHH) * 100)}%`;
       },
     },
     {
       name: "ACSOVEH0",
       label: "Households w/o Vehicle",
       renderer: ({ ACSOVEH0, ACSTOTHH }) => {
-        return `${(ACSOVEH0 / ACSTOTHH) * 100}%`;
+        return `${Math.round((ACSOVEH0 / ACSTOTHH) * 100)}%`;
       },
     },
   ],
@@ -73,12 +73,16 @@ const Economy = {
     {
       name: "PCI_CY",
       label: "Per capita income",
-      valueType: "CURRENCY",
+      renderer: ({PCI_CY}) => {
+        return `$${Number(PCI_CY).toLocaleString()}`;
+      }
     },
     {
       name: "AVGVAL_CY",
       label: "Average home value",
-      valueType: "CURRENCY",
+      renderer: ({AVGVAL_CY}) => {
+        return `$${Number(AVGVAL_CY).toLocaleString()}`;
+      }
     },
     {
       name: "UNEMPRT_CY",
