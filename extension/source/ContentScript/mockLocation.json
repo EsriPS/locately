@@ -1,0 +1,58 @@
+{
+  "fieldAliases": {
+    "ID": "Id",
+    "OBJECTID_0": "Object ID",
+    "StdGeographyLevel": "Standard geography level",
+    "StdGeographyName": "Standard geography name",
+    "StdGeographyID": "Standard geography Id",
+    "sourceCountry": "Country code",
+    "AreaName": "AreaName",
+    "DataLayerID": "DataLayerID",
+    "MajorSubdivisionType": "MajorSubdivisionType",
+    "Score": "Score",
+    "ObjectId": "ObjectId",
+    "MajorSubdivisionAbbr": "MajorSubdivisionAbbr",
+    "MajorSubdivisionName": "MajorSubdivisionName",
+    "AreaID": "AreaID",
+    "CountryAbbr": "CountryAbbr",
+    "DatasetID": "DatasetID",
+    "aggregationMethod": "Aggregation method",
+    "populationToPolygonSizeRating": "Population to polygon size rating for the country",
+    "apportionmentConfidence": "Apportionment confidence for the country",
+    "HasData": "Has data",
+    "TOTHH20": "2020 Total Households",
+    "ACSHHDIS": "2019 HHs w/1+ Persons w/Disability (ACS 5-Yr)",
+    "ACSHHBPOV": "2019 HHs: Inc Below Poverty Level (ACS 5-Yr)",
+    "ACSOVEH0": "2019 Owner HHs with 0 Vehicles (ACS 5-Yr)"
+  },
+  "features": [
+    {
+      "attributes": {
+        "ID": "0",
+        "OBJECTID_0": 1,
+        "StdGeographyLevel": "US.Places",
+        "StdGeographyName": "Boulder city",
+        "StdGeographyID": "0807850",
+        "sourceCountry": "US",
+        "AreaName": "Boulder city",
+        "DataLayerID": "US.Places",
+        "MajorSubdivisionType": "State",
+        "Score": 100,
+        "ObjectId": 1,
+        "MajorSubdivisionAbbr": "CO",
+        "MajorSubdivisionName": "Colorado",
+        "AreaID": "0807850",
+        "CountryAbbr": "US",
+        "DatasetID": "USA_ESRI_2021",
+        "aggregationMethod": "Multiple methods",
+        "populationToPolygonSizeRating": 2.191,
+        "apportionmentConfidence": 2.576,
+        "HasData": 1,
+        "TOTHH20": 43446,
+        "ACSHHDIS": 5485,
+        "ACSHHBPOV": 8117,
+        "ACSOVEH0": 466
+      }
+    }
+  ]
+}

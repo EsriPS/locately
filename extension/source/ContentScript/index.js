@@ -3,50 +3,36 @@ import ReactDOM from "react-dom";
 
 import LocatelyPopover from "../LocatelyPopover";
 
-const mockLocation = {
-  attributes: {
-    ID: "0",
-    OBJECTID_0: 1,
-    StdGeographyLevel: "US.Places",
-    StdGeographyName: "Boston city",
-    StdGeographyID: "2507000",
-    sourceCountry: "US",
-    AreaName: "Boston city",
-    DataLayerID: "US.Places",
-    MajorSubdivisionType: "State",
-    Score: 100,
-    ObjectId: 1,
-    MajorSubdivisionAbbr: "MA",
-    MajorSubdivisionName: "Massachusetts",
-    AreaID: "2507000",
-    CountryAbbr: "US",
-    DatasetID: "USA_ESRI_2021",
-    aggregationMethod: "Query:US.Places",
-    populationToPolygonSizeRating: 2.191,
-    apportionmentConfidence: 2.576,
-    HasData: 1,
-    TOTPOP: 692769,
-    TOTHH: 282307,
-    AVGHHSZ: 2.28,
-    TOTMALES: 333836,
-    TOTFEMALES: 358933,
-  },
-};
+import mockLocation from "./mockLocation.json";
 
 const LocatelyApp = () => {
-  const [locationDetails, setLocationDetails] = useState(mockLocation);
+  const [locationDetails, setLocationDetails] = useState(null);
   const [referenceElement, setReferenceElement] = useState(null);
+  const [settings, setSettings] = useState(null);
+
+  // Get the user's settings
+  // chrome.storage.sync.get({
+  //   favoriteColor: 'red',
+  //   likesColor: true
+  // }, function(items) {
+  //   document.getElementById('color').value = items.favoriteColor;
+  //   document.getElementById('like').checked = items.likesColor;
+  // });
 
   // Set up the locately popover events
   useEffect(() => {
     document.body.addEventListener("click", function (event) {
-      const locatelyFips = event.target.attributes.getNamedItem("data-locately-fips")?.value;
-      if (locatelyFips) {
+      const city =
+        event.target.attributes.getNamedItem("data-locately-city")?.value;
+      const state = event.target.attributes.getNamedItem(
+        "data-locately-state"
+      )?.value;
+      if (city && state) {
         // Set the reference element to position popper
         setReferenceElement(event.target);
 
         // Get location details and call setLocationDetails
-        getDetailsForLocation(locatelyFips);
+        getDetailsForLocation({ city, state });
       } else {
         setReferenceElement(null);
       }
@@ -55,40 +41,43 @@ const LocatelyApp = () => {
 
   // Detect dom changes so we can search the text
   useEffect(() => {
-    // const domain = window.location.hostname;
-    // const el = document.querySelector(searchableElements[domain][0]);
     getLocationsFromElements(document.body);
-    // const observer = new MutationObserver((mutations) => {
-    //   mutations.forEach(({ addedNodes }) => {
-    //     if (addedNodes?.length > 0) {
-    //       // Send nodes to be searched
-    //       console.log("do it again", addedNodes)
-    //       getLocationsFromElements(document.body);
-    //     }
-    //   });
-    // });
-
-    // observer.observe(document.body, {
-    //   childList: true,
-    //   subtree: true,
-    // });
   }, []);
 
   // Send nodes to be searched
   const getLocationsFromElements = async (contentRoot) => {
+    // Traverse contentRoot and get array of strings
+    let text = [],
+      node,
+      nodeIterator = document.createNodeIterator(
+        contentRoot,
+        NodeFilter.SHOW_TEXT,
+        null,
+        false
+      );
+
+    while ((node = nodeIterator.nextNode())) {
+      // Need to clean this up so we dont get empty nodes
+      text.push(node.nodeValue);
+    }
+    console.log(text);
+
     // Make request to get locations
     const locations = [
       {
         text: "U.S.",
-        fips: "stuff"
+        city: "stuff",
+        state: "other stuff",
       },
       {
         text: "codylawson",
-        fips: "08013",
+        city: "08013",
+        state: "other stuff",
       },
       {
         text: "Cody Lawson",
-        fips: "08015",
+        city: "08015",
+        state: "other stuff",
       },
     ];
 
@@ -101,8 +90,10 @@ const LocatelyApp = () => {
   };
 
   // Send locations to get geo-enriched
-  const getDetailsForLocation = async (fips) => {
+  const getDetailsForLocation = async ({ city, state }) => {
     // Do the stuff
+    console.log(city, state)
+    setLocationDetails(mockLocation);
   };
 
   // Update dom with data attributes
@@ -171,7 +162,8 @@ const LocatelyApp = () => {
 
         // Highlight the current node
         const spanNode = document.createElement("span");
-        spanNode.setAttribute("data-locately-fips", location.fips);
+        spanNode.setAttribute("data-locately-city", location.city);
+        spanNode.setAttribute("data-locately-state", location.state);
 
         node.textNode.parentNode.replaceChild(spanNode, node.textNode);
         spanNode.appendChild(node.textNode);
