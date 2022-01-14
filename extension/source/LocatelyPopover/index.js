@@ -23,6 +23,10 @@ const LocatelyPopover = ({
   const [popperElement, setPopperElement] = useState(null);
   const { styles, attributes } = usePopper(referenceElement, popperElement);
 
+  const renderHtml = (snippet) => {
+    return { __html: snippet || "lorem ipsum..." };
+  };
+
   return (
     <div
       className="locately-wrapper"
@@ -37,10 +41,26 @@ const LocatelyPopover = ({
         <>
           <div className="locately-visual-row">
             <div className="locately-map">map</div>
-            <div className="locately-img">img</div>
+            <div className="locately-img">
+              <img
+                height="100"
+                width="100"
+                src={locationDetails.wpInfo.imageUrl}
+              />
+            </div>
           </div>
           <div className="locately-description">
-            {locationDetails.description || "lorem ipsum..."}
+            <span
+              dangerouslySetInnerHTML={renderHtml(
+                locationDetails.wpInfo.snippet
+              )}
+            ></span>
+            <span>
+              ...{" "}
+              <a href={locationDetails.wpInfo.pageUrl} target="_blank">
+                [learn more]
+              </a>
+            </span>
           </div>
           <div className="locately-stats-row">
             {dataCollection.variables.map((variable) => {
