@@ -47,7 +47,7 @@ const LocatelyApp = () => {
   // Send nodes to be searched
   const getLocationsFromElements = async (contentRoot) => {
     // Traverse contentRoot and get array of strings
-    let text = [],
+    let textArr = [],
       node,
       nodeIterator = document.createNodeIterator(
         contentRoot,
@@ -55,14 +55,15 @@ const LocatelyApp = () => {
         null,
         false
       );
-
     while ((node = nodeIterator.nextNode())) {
-      // Need to clean this up so we dont get empty nodes
-      text.push(node.nodeValue);
+      const trimmedValue = node.nodeValue.trim();
+      if (trimmedValue) {
+        textArr.push(trimmedValue);
+      }
     }
-    console.log(text);
 
     // Make request to get locations
+    // const locations = await goGetThatShit(textArr);
     const locations = [
       {
         text: "U.S.",
