@@ -34,18 +34,18 @@
         esriConfig.apiKey =
           "AAPK96fad6978240451fa5592219e9a7686bgn2mig5Td0pYlUH0pC-yuPDe8Q0PGBh4SrJtFbt2Ue-h04k7xtNbB69gMD48OigO";
 
+        // Default center and zoom (in case no coords are passed in)
+        let zoom = 4;
+        let coords = {
+          x: -98,
+          y: 38,
+        };
+
         // Get coords from the URL
         const params = new URLSearchParams(window.location.search);
-        const { x, y } = JSON.parse(params.get("coords"));
-
-        // Default center and zoom (in case no coords are passed in)
-        let center = [-98, 38];
-        let zoom = 4;
-
-        // If coords were passed in, set them
-        if (x && y) {
+        if (params.has("coords")) {
+          coords = JSON.parse(params.get("coords"));
           zoom = 13;
-          center = [x, y]; // Longitude, latitude
         }
 
         // Construct a new JSAPI Map
@@ -57,7 +57,7 @@
         // Construct a new JSAPI MapView
         const view = new MapView({
           map,
-          center,
+          center: [coords.x, coords.y],
           zoom, // Zoom level
           container: "mapView", // Div element
         });
