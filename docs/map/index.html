@@ -39,15 +39,38 @@ https://developers.arcgis.com/documentation/mapping-apis-and-services/get-starte
         Map,
         MapView
       ) {
+        const params = new URLSearchParams(window.location.search);
+        const center = JSON.parse(params.get("coords"));
+
         const map = new Map({
-          basemap: "streets-vector", // Basemap layer service
+          basemap: "streets-navigation-vector", // Basemap layer service
         });
 
         const view = new MapView({
           map: map,
-          center: [-118.805, 34.027], // Longitude, latitude
+          center: [center.x, center.y], // Longitude, latitude
           zoom: 13, // Zoom level
           container: "viewDiv", // Div element
+        });
+
+        // Clean up the UI
+        view.ui.components = ["attribution"];
+
+        // Disable various methods of navigation
+        view.on("drag", (event) => {
+          event.stopPropagation();
+        });
+
+        view.on("mouse-wheel", (event) => {
+          event.stopPropagation();
+        });
+
+        view.on("double-click", (event) => {
+          event.stopPropagation();
+        });
+
+        view.on("double-click", ["Control"], (event) => {
+          event.stopPropagation();
         });
       });
     </script>

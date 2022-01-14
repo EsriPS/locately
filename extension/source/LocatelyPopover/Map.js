@@ -2,10 +2,10 @@
 import React from "react";
 
 const Map = ({ place }) => {
-  console.log({place});
-  return (
-    <iframe src="https://determined-mcclintock-bfbd81.netlify.app/"></iframe>
-  );
+  const xy = JSON.stringify(place.geometry);
+  const url = `https://esrips.github.io/locately/map?coords=${xy}`;
+
+  return <iframe src={url}></iframe>;
 };
 
 export default Map;

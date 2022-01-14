@@ -33,6 +33,7 @@ const findStudyArea = async ({ city, state }) => {
       sourceCountry: "US",
       geographyLayers: ["US.Places"],
       returnGeometry: true,
+      returnCentroids:true,
       featureLimit: 5,
       authentication,
       geographyQuery,
@@ -49,13 +50,15 @@ const findStudyArea = async ({ city, state }) => {
  * Send Standard Geography to ArcGIS to be enriched
  */
 const enrich = async (studyArea) => {
+  const feature = studyArea[0];
+
   // Assemble the `studyAreas` param
   const studyAreas = [
     {
       sourceCountry: "US",
       layer: "US.Places",
-      ids: [studyArea[0].attributes.AreaID],
-      attributes: studyArea[0].attributes,
+      ids: [feature.attributes.AreaID],
+      attributes: feature.attributes,
     },
   ];
 
@@ -66,8 +69,10 @@ const enrich = async (studyArea) => {
       authentication,
     });
 
-    // geometry: studyArea[0].geometry,
-    return response.results[0].value.FeatureSet[0];
+    const result = response.results[0].value.FeatureSet[0];
+
+    // Add the original geometry back to the result
+    return { ...result, geometry: feature.geometry };
   } catch (error) {
     console.error(error);
   }
