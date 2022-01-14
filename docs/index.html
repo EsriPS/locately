@@ -1,23 +1,114 @@
 <!doctype html>
 
-<html lang="en">
+<html lang = "en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset = "utf-8">
+  <meta name    = "viewport" content = "width=device-width, initial-scale=1">
 
   <title>locately</title>
-  <meta name="description" content="locately: a pocket atlas for your browser.">
+  <meta name = "description" content = "locately: a pocket atlas for your browser.">
 
-  <link rel="stylesheet" href="https://use.typekit.net/qxx8cgd.css">
+  <link rel = "stylesheet" href = "https://use.typekit.net/qxx8cgd.css">
 
 </head>
 
+<style>
+  :root {
+  --light         : #EBE0DE;
+  --green         : #6DCCA5;
+  --dark-green    : #216c2a;
+  --dark-blue     : #0A0A5f;
+  background-color: #0A0A5f;
+  }
+
+  body, html {
+  /* height: 100%;
+  width : 100%; */
+  font-family: halcom, sans-serif;
+}
+
+  h1 {
+    font-size            : 10rem;
+    font-weight          : bold;
+    text-decoration      : underline;
+    text-decoration-color: #6DCCA5;
+    line-height          : 1rem;
+
+  }
+
+  h2 {
+    font-size  : 4rem;
+    font-style : italic;
+    font-weight: normal;
+    line-height: 1rem;
+  }
+
+  h3 {
+    font-size  : 3rem;
+    line-height: 1rem;
+    font-style : italic;
+    font-weight: normal;
+    margin-top: 1rem;
+  }
+
+  p {
+    font-size: 1.25rem;
+  }
+
+  button {
+    background-color: #6DCCA5;
+    color           : #0A0A5f;
+    border-style    : none;
+    padding         : 1rem;
+    font-size: 1.25rem;
+
+  }
+
+  button:hover {
+    color           : #0A0A5f;
+    background-color: #6DCCA5;
+  }
+
+  /* .wrapper1 {
+    height     : 100%;
+    width      : 100%;
+    max-width  : 100%;
+    padding    : 2rem;
+
+  }
+
+  .wrapper2 {
+    display        : flex;
+    flex-direction : row;
+    justify-content: flex-end;
+    width          : 100%;
+  } */
+
+  .wrapper3 {
+    border-style    : solid;
+    border-color    : #6DCCA5;
+    border-width    : 8px;
+    background-color: #EBE0DE;
+    color           : #0A0A5f;
+    display         : flex;
+    flex-direction  : row;
+    gap             : 2rem;
+    width           : 40%;
+    margin-left: 30%;
+    margin-top: 5%;
+    height: auto;
+    padding: 2rem;
+  }
+
+  .wrapper4 {
+    margin-left: 2%;
+  }
+
+</style>
 
 <body>
-  <div class="wrapper1">
-    <div class="wrapper2">
-      <div class="wrapper3">
-        <img src="./logo.jpg" height = "60%", width = "auto"/>
+      <div class = "wrapper3">
+      <img src   = "./logo.jpg" height = "40%" width = "40%"/>
         <div>
           <h3> installation</h3>
           <button> Download </button>
@@ -28,14 +119,12 @@
             <li> step 4 </li>
           </ul>
         </div>
-
       </div>
-    </div>
-    <div class="wrapper4">
-      <h1 style="color: #EBE0DE">locately</h1>
-      <h2 style="color: #EBE0DE">a pocket atlas for your browser</h2>
+    <div class = "wrapper4" style = "color: #EBE0DE">
+      <h1>locately</h1>
+      <h2>a pocket atlas for your browser</h2>
       <p>
-        something something geographic context, learn about your world, step beyond your front door. created for hack the map 5 
+        something something geographic context, learn about your world, step beyond your front door. <br>created for hack the map 5 
       </p>
     </div>
   </div>
