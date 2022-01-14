@@ -3,8 +3,8 @@ import ReactDOM from "react-dom";
 
 import LocatelyPopover from "../LocatelyPopover";
 import { enrich, fetchPlaces, findStudyArea } from "./api";
+import { searchWikipedia } from './wikipediaApi';
 
-import mockLocation from "./mockLocation.json";
 import { Demographics } from "./dataCollections";
 
 const LocatelyApp = () => {
@@ -77,16 +77,10 @@ const LocatelyApp = () => {
 
   // Send locations to get geo-enriched
   const getDetailsForLocation = async ({ city, state }) => {
-    // Do the stuff
-    console.log({ city, state });
-
     const studyAreas = await findStudyArea({ city, state });
-    console.log({ studyAreas });
-
     const enrichedPlaces = await enrich(studyAreas);
-    console.log({ enrichedPlaces });
-
-    setLocationDetails(enrichedPlaces);
+    const wpInfo = await searchWikipedia(`${city}, ${state}`);
+    setLocationDetails({wpInfo, ...enrichedPlaces});
   };
 
   // Update dom with data attributes
