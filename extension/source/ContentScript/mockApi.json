@@ -1,0 +1,24 @@
+{
+  "places": [
+    {
+      "text": "BOULDER, Colo",
+      "city": "Boulder",
+      "state": "CO"
+    },
+    {
+      "text": "Denver",
+      "city": "Denver",
+      "state": "CO"
+    },
+    {
+      "text": "Louisville",
+      "city": "Louisville",
+      "state": "CO"
+    },
+    {
+      "text": "Lafayette",
+      "city": "Lafayette",
+      "state": "CO"
+    }
+  ]
+}
