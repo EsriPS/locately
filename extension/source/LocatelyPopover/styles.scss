@@ -6,6 +6,10 @@
   width: 400px;
   background: #fafafa;
   color: #1c2229;
+  overflow: hidden;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+  font-size: 13px;
+  line-height: 1.5;
 
   .locately-visual-row {
     display: flex;
@@ -15,10 +19,40 @@
       flex: 1 0 auto;
       height: 150px;
     }
+
+    .locately-map {
+      width: 250px;
+
+      iframe {
+        border: none;
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    .locately-img {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 150px;
+      position: relative;
+      overflow: hidden;
+
+      img {
+        flex: 1 0 auto;
+        height: 150px;
+        min-width: 150px;
+        min-height: 150px;
+      }
+    }
   }
 
   .locately-description {
-    padding: 10px;
+    padding: 10px 10px 5px;
+
+    .locately-attribution {
+      white-space: nowrap;
+    }
   }
 
   .locately-stats-row {
@@ -31,10 +65,10 @@
       flex-direction: column;
       justify-content: space-between;
       text-align: center;
-      padding: 10px;
+      padding: 5px 10px;
 
       .locately-stat-label {
-        opacity: 0.7;
+        opacity: 0.6;
         font-size: 12px;
       }
 

@@ -37,6 +37,7 @@ const LocatelyApp = () => {
         getDetailsForLocation({ city, state });
       } else {
         setReferenceElement(null);
+        setLocationDetails(null)
       }
     });
   }, [setReferenceElement]);

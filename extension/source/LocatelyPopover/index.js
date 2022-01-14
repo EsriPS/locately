@@ -83,16 +83,14 @@ const LocatelyPopover = ({
       }}
       {...attributes.popper}
     >
-      {locationDetails && (
+      {locationDetails && referenceElement && (
         <>
           <div className="locately-visual-row">
-            <div className="locately-map"><Map place={locationDetails} /></div>
+            <div className="locately-map">
+              <Map place={locationDetails} />
+            </div>
             <div className="locately-img">
-              <img
-                height="100"
-                width="100"
-                src={locationDetails.wpInfo.imageUrl}
-              />
+              <img src={locationDetails.wpInfo.imageUrl} />
             </div>
           </div>
           <div className="locately-description">
@@ -103,9 +101,12 @@ const LocatelyPopover = ({
             ></span>
             <span>
               ...{" "}
-              <a href={locationDetails.wpInfo.pageUrl} target="_blank">
-                [learn more]
-              </a>
+              <span className="locately-attribution">
+                —{" "}
+                <a href={locationDetails.wpInfo.pageUrl} target="_blank">
+                  Wikipedia
+                </a>
+              </span>
             </span>
           </div>
           <div className="locately-stats-row">
