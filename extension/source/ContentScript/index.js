@@ -2,14 +2,15 @@ import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 
 import LocatelyPopover from "../LocatelyPopover";
+import { enrich, fetchPlaces, findStudyArea } from "./api";
 
 import mockLocation from "./mockLocation.json";
-import { AtRisk } from "./dataCollections";
+import { Demographics } from "./dataCollections";
 
 const LocatelyApp = () => {
   const [locationDetails, setLocationDetails] = useState(null);
   const [referenceElement, setReferenceElement] = useState(null);
-  const [dataCollection, setDataCollection] = useState(AtRisk);
+  const [dataCollection, setDataCollection] = useState(Demographics);
 
   // Get the user's settings
   // chrome.storage.sync.get({
@@ -64,24 +65,7 @@ const LocatelyApp = () => {
     }
 
     // Make request to get locations
-    // const locations = await goGetThatShit(textArr);
-    const locations = [
-      {
-        text: "U.S.",
-        city: "stuff",
-        state: "other stuff",
-      },
-      {
-        text: "codylawson",
-        city: "08013",
-        state: "other stuff",
-      },
-      {
-        text: "Cody Lawson",
-        city: "08015",
-        state: "other stuff",
-      },
-    ];
+    const locations = await fetchPlaces(textArr);
 
     // Transform those locations?
     locations.forEach((location) => {
@@ -94,8 +78,15 @@ const LocatelyApp = () => {
   // Send locations to get geo-enriched
   const getDetailsForLocation = async ({ city, state }) => {
     // Do the stuff
-    console.log(city, state)
-    setLocationDetails(mockLocation);
+    console.log({ city, state });
+
+    const studyAreas = await findStudyArea({ city, state });
+    console.log({ studyAreas });
+
+    const enrichedPlaces = await enrich(studyAreas);
+    console.log({ enrichedPlaces });
+
+    setLocationDetails(enrichedPlaces);
   };
 
   // Update dom with data attributes

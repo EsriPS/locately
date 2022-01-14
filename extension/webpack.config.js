@@ -9,6 +9,7 @@ const ExtensionReloader = require('webpack-extension-reloader');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const WextManifestWebpackPlugin = require('wext-manifest-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 
 const viewsPath = path.join(__dirname, 'views');
 const sourcePath = path.join(__dirname, 'source');
@@ -171,6 +172,7 @@ module.exports = {
     }),
     // plugin to enable browser reloading in development mode
     extensionReloaderPlugin,
+    new Dotenv({path: `./.env`}),
   ],
 
   optimization: {

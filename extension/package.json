@@ -27,8 +27,12 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.14.0",
+    "@esri/arcgis-rest-auth": "^3.4.3",
+    "@esri/arcgis-rest-demographics": "^3.4.3",
+    "@esri/arcgis-rest-request": "^3.4.3",
     "@popperjs/core": "^2.11.2",
     "advanced-css-reset": "^1.2.2",
+    "dotenv-webpack": "^7.0.3",
     "emoji-log": "^1.0.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
