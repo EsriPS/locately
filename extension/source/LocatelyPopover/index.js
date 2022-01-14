@@ -15,7 +15,11 @@ import { usePopper } from "react-popper";
 // CSS
 import "./styles.scss";
 
-const LocatelyPopover = ({ referenceElement, locationDetails }) => {
+const LocatelyPopover = ({
+  referenceElement,
+  locationDetails,
+  dataCollection,
+}) => {
   const [popperElement, setPopperElement] = useState(null);
   const { styles, attributes } = usePopper(referenceElement, popperElement);
 
@@ -29,7 +33,31 @@ const LocatelyPopover = ({ referenceElement, locationDetails }) => {
       }}
       {...attributes.popper}
     >
-      <div className="locately-content">Locately content</div>
+      {locationDetails && (
+        <>
+          <div className="locately-visual-row">
+            <div className="locately-map">map</div>
+            <div className="locately-img">img</div>
+          </div>
+          <div className="locately-description">
+            {locationDetails.description || "lorem ipsum..."}
+          </div>
+          <div className="locately-stats-row">
+            {dataCollection.variables.map((variable) => {
+              const name = variable.split(".")[1];
+              const value = locationDetails.features[0].attributes[name];
+              const label = locationDetails.fieldAliases[name];
+              if (!value) return;
+              return (
+                <div className="locately-stat" key={name}>
+                  <div className="locately-stat-label">{label}</div>
+                  <div className="locately-stat-value">{value}</div>
+                </div>
+              );
+            })}
+          </div>
+        </>
+      )}
     </div>
   );
 };

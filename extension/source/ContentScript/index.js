@@ -4,11 +4,12 @@ import ReactDOM from "react-dom";
 import LocatelyPopover from "../LocatelyPopover";
 
 import mockLocation from "./mockLocation.json";
+import { AtRisk } from "./dataCollections";
 
 const LocatelyApp = () => {
   const [locationDetails, setLocationDetails] = useState(null);
   const [referenceElement, setReferenceElement] = useState(null);
-  const [settings, setSettings] = useState(null);
+  const [dataCollection, setDataCollection] = useState(AtRisk);
 
   // Get the user's settings
   // chrome.storage.sync.get({
@@ -176,6 +177,7 @@ const LocatelyApp = () => {
     <LocatelyPopover
       referenceElement={referenceElement}
       locationDetails={locationDetails}
+      dataCollection={dataCollection}
     />
   );
 };
