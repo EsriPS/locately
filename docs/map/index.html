@@ -1,12 +1,3 @@
-<!--
-
-To run this demo, you need to replace 'YOUR_API_KEY' with an API key from the ArcGIS Developer dashboard.
-
-Sign up for a free account and get an API key.
-
-https://developers.arcgis.com/documentation/mapping-apis-and-services/get-started/
-
- -->
 <html>
   <head>
     <meta charset="utf-8" />
@@ -14,12 +5,12 @@ https://developers.arcgis.com/documentation/mapping-apis-and-services/get-starte
       name="viewport"
       content="initial-scale=1, maximum-scale=1, user-scalable=no"
     />
-    <title>ArcGIS API for JavaScript Tutorials: Display a map</title>
+    <title>locately map</title>
 
     <style>
       html,
       body,
-      #viewDiv {
+      #mapView {
         padding: 0;
         margin: 0;
         height: 100%;
@@ -39,18 +30,36 @@ https://developers.arcgis.com/documentation/mapping-apis-and-services/get-starte
         Map,
         MapView
       ) {
-        const params = new URLSearchParams(window.location.search);
-        const center = JSON.parse(params.get("coords"));
+        // Set our ArcGIS Platform API Key
+        esriConfig.apiKey =
+          "AAPK96fad6978240451fa5592219e9a7686bgn2mig5Td0pYlUH0pC-yuPDe8Q0PGBh4SrJtFbt2Ue-h04k7xtNbB69gMD48OigO";
 
+        // Get coords from the URL
+        const params = new URLSearchParams(window.location.search);
+        const { x, y } = JSON.parse(params.get("coords"));
+
+        // Default center and zoom (in case no coords are passed in)
+        let center = [-98, 38];
+        let zoom = 4;
+
+        // If coords were passed in, set them
+        if (x && y) {
+          zoom = 13;
+          center = [x, y]; // Longitude, latitude
+        }
+
+        // Construct a new JSAPI Map
         const map = new Map({
-          basemap: "streets-navigation-vector", // Basemap layer service
+          // Use an ArcGIS Platform basemap service
+          basemap: "arcgis-navigation",
         });
 
+        // Construct a new JSAPI MapView
         const view = new MapView({
-          map: map,
-          center: [center.x, center.y], // Longitude, latitude
-          zoom: 13, // Zoom level
-          container: "viewDiv", // Div element
+          map,
+          center,
+          zoom, // Zoom level
+          container: "mapView", // Div element
         });
 
         // Clean up the UI
@@ -76,6 +85,6 @@ https://developers.arcgis.com/documentation/mapping-apis-and-services/get-starte
     </script>
   </head>
   <body>
-    <div id="viewDiv"></div>
+    <div id="mapView"></div>
   </body>
 </html>
