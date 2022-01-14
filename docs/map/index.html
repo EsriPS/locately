@@ -45,7 +45,7 @@
         const params = new URLSearchParams(window.location.search);
         if (params.has("coords")) {
           coords = JSON.parse(params.get("coords"));
-          zoom = 13;
+          zoom = 10;
         }
 
         // Construct a new JSAPI Map
