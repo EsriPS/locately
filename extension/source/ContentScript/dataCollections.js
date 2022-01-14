@@ -1,31 +1,29 @@
-// At Risk data collection
-const AtRisk = {
-  variables: [
-    'AtRisk.ACSTOTHH', // Total households (2020 Census)
-    'AtRisk.ACSHHDIS', // Total households with 1+ disability (2019 ACS)
-    'AtRisk.ACSHHBPOV', // Total households below poverty line (2019 ACS)
-    'AtRisk.ACSOVEH0', // Total households with 0 vehicles (2019 ACS)
-  ],
-};
-
 // Demographics data collection
 const Demographics = {
   variables: [
-    'KeyUSFactsPL94.TOTHH20', // Total households (2020 Census)
-    'AtRisk.ACSHHDIS', // Total households with 1+ disability (2019 ACS)
-    'AtRisk.ACSHHBPOV', // Total households below poverty line (2019 ACS)
-    'AtRisk.ACSOVEH0', // Total households with 0 vehicles (2019 ACS)
+    "KeyUSFactsPL94.TOTPOP20", // Total population (2020 Census)
+    "populationtotalsPL94.POPDENS20", // Population density per sq mi (2020 Census)
+    "KeyUSFacts.DIVINDX_CY", // Diversity Index 2021
   ],
 };
 
-// AnotherAnother data collection
-const AnotherAnotherOne = {
+// People At Risk data collection
+const AtRisk = {
   variables: [
-    'KeyUSFactsPL94.TOTHH20', // Total households (2020 Census)
-    'AtRisk.ACSHHDIS', // Total households with 1+ disability (2019 ACS)
-    'AtRisk.ACSHHBPOV', // Total households below poverty line (2019 ACS)
-    'AtRisk.ACSOVEH0', // Total households with 0 vehicles (2019 ACS)
+    "AtRisk.ACSTOTHH", // Total households (2020 Census)
+    "AtRisk.ACSHHDIS", // Total households with 1+ disability (2019 ACS)
+    "AtRisk.ACSHHBPOV", // Total households below poverty line (2019 ACS)
+    "AtRisk.ACSOVEH0", // Total households with 0 vehicles (2019 ACS)
   ],
 };
 
-export { AtRisk, Demographics, AnotherAnotherOne };
+// Money data collection
+const Money = {
+  variables: [
+    "KeyUSFacts.PCI_CY", // Per capita income (2021 Esri)
+    "KeyUSFacts.AVGVAL_CY", // Average home value (2021 Esri)
+    "EmploymentUnemployment.UNEMPRT_CY", // Unemployment Rate 2021
+  ],
+};
+
+export { AtRisk, Demographics, Money };
