@@ -12,7 +12,7 @@ const Demographics = {
 // People At Risk data collection
 const AtRisk = {
   variables: [
-    "AtRisk.ACSTOTHH", // Total households (2020 Census)
+    "AtRisk.ACSTOTHH", // Total households (2019 ACS)
     "AtRisk.ACSHHDIS", // Total households with 1+ disability (2019 ACS)
     "AtRisk.ACSHHBPOV", // Total households below poverty line (2019 ACS)
     "AtRisk.ACSOVEH0", // Total households with 0 vehicles (2019 ACS)

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 
 // Redux operations and local helpers/utils/modules
 import { usePopper } from "react-popper";
+import Map from "./Map";
 
 // Component specific modules (Component-styled, etc.)
 
@@ -40,7 +41,7 @@ const LocatelyPopover = ({
       {locationDetails && (
         <>
           <div className="locately-visual-row">
-            <div className="locately-map">map</div>
+            <div className="locately-map"><Map place={locationDetails} /></div>
             <div className="locately-img">
               <img
                 height="100"

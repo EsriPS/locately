@@ -32,7 +32,7 @@ const findStudyArea = async ({ city, state }) => {
     const studyArea = await getGeography({
       sourceCountry: "US",
       geographyLayers: ["US.Places"],
-      returnGeometry: false,
+      returnGeometry: true,
       featureLimit: 5,
       authentication,
       geographyQuery,
@@ -66,6 +66,7 @@ const enrich = async (studyArea) => {
       authentication,
     });
 
+    // geometry: studyArea[0].geometry,
     return response.results[0].value.FeatureSet[0];
   } catch (error) {
     console.error(error);
