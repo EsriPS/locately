@@ -82,7 +82,9 @@ const LocatelyApp = () => {
 
   // Detect dom changes so we can search the text
   useEffect(() => {
-    getLocationsFromElements(document.body);
+    setTimeout(() => {
+      getLocationsFromElements(document.body);
+    }, 2000)
   }, []);
 
   // Send nodes to be searched
