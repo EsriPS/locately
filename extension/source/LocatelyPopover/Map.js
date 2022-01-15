@@ -2,7 +2,6 @@
 import React from "react";
 
 const Map = ({ place }) => {
-  console.log({ place });
   const xy = JSON.stringify(place.geometry);
   const city = place.features[0].attributes.AreaName;
   const state = place.features[0].attributes.MajorSubdivisionAbbr;

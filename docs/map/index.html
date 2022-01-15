@@ -34,7 +34,7 @@
         "esri/core/watchUtils",
       ], function (esriConfig, Map, MapView, Graphic, esriRequest, watchUtils) {
         // Initialize global namespace
-        window.locately = {};
+        window.locately = { graphicReady: false };
 
         // Set our ArcGIS Platform API Key
         esriConfig.apiKey =
@@ -69,6 +69,19 @@
         /*
          * Get a "Standard Geogaphy" object from ArcGIS to be used as studyAreas
          */
+        const addGraphic = (mapView, graphic) => {
+          mapView.graphics.add(graphic);
+          const extent = graphic.geometry.extent.expand(1.1);
+          mapView.goTo(extent);
+
+          // NOTE: This will open the ArcGIS Online Map Viewer to the extent of the feature rather than using the 'find' parameter
+          // const arcgisMapViewerUrl = `https://www.arcgis.com/apps/mapviewer/index.html?extent=${extent.xmin},${extent.ymin},${extent.xmax},${extent.ymax}`;
+          // document.getElementById("mapLink").href = arcgisMapViewerUrl;
+        };
+
+        /*
+         * Get a "Standard Geogaphy" object from ArcGIS to be used as studyAreas
+         */
         const findStudyArea = async ({ city, state }) => {
           const body = new FormData();
           body.append("f", "json");
@@ -99,21 +112,12 @@
             color: [0, 0, 0, 0],
           };
 
-          console.log(feature);
+          // Create graphic
+          const graphic = new Graphic(feature);
+          window.locately.graphic = graphic;
 
           if (window.locately.mapView) {
-            // Create graphic
-            const graphic = new Graphic(feature);
-            window.locately.mapView.graphics.add(graphic);
-
-            const extent = graphic.geometry.extent.expand(1.1);
-            window.locately.mapView.goTo(extent);
-
-            // NOTE: This will open the ArcGIS Online Map Viewer to the extent of the feature rather than using the 'find' parameter
-            // const arcgisMapViewerUrl = `https://www.arcgis.com/apps/mapviewer/index.html?extent=${extent.xmin},${extent.ymin},${extent.xmax},${extent.ymax}`;
-            // document.getElementById("mapLink").href = arcgisMapViewerUrl;
-
-            console.log("added to the map!", graphic);
+            addGraphic(window.locately.mapView, graphic);
           }
         };
 
@@ -137,6 +141,10 @@
 
         view.when(function () {
           window.locately.mapView = view;
+
+          if (window.locately.graphic) {
+            addGraphic(view, window.locately.graphic);
+          }
         });
 
         // Clean up the UI
