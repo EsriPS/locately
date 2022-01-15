@@ -1,6 +1,62 @@
 {
   "places": [
     {
+      "text": "Cleveland",
+      "city": "Cleveland",
+      "state": "OH"
+    },
+    {
+      "text": "Newark",
+      "city": "Newark",
+      "state": "NJ"
+    },
+    {
+      "text": "Washington",
+      "city": "Washington",
+      "state": "DC"
+    },
+    {
+      "text": "North Olmsted",
+      "city": "North Olmsted",
+      "state": "OH"
+    },
+    {
+      "text": "Chicago",
+      "city": "Chicago",
+      "state": "IL"
+    },
+    {
+      "text": "Birmingham",
+      "city": "Birmingham",
+      "state": "AL"
+    },
+    {
+      "text": "Omaha",
+      "city": "Omaha",
+      "state": "NE"
+    },
+    {
+      "text": "Canton, S.D.",
+      "city": "Canton",
+      "state": "SD"
+    },
+    {
+      "text": "Los Angeles",
+      "city": "Los Angeles",
+      "state": "CA"
+    },
+    {
+      "text": "La Mesa, Calif.",
+      "city": "La Mesa",
+      "state": "CA"
+    },
+    {
+      "text": "New York City",
+      "city": "New York City",
+      "state": "NY"
+    },
+
+    {
       "text": "BOULDER, Colo",
       "city": "Boulder",
       "state": "CO"
