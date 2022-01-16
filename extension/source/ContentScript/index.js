@@ -5,7 +5,7 @@ import LocatelyPopover from "../LocatelyPopover";
 import { enrich, fetchPlaces, findStudyArea } from "./api";
 import { searchWikipedia } from "./wikipediaApi";
 
-import { debounce } from "./utils";
+import { debounce } from "../utils";
 
 import * as dataCollections from "./dataCollections";
 import defaultSettings from "../defaultSettings.json";

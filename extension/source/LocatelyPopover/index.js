@@ -5,6 +5,8 @@ import React, { useState, useEffect } from "react";
 import { usePopper } from "react-popper";
 import Map from "./Map";
 
+import { abrevCount } from "../utils";
+
 // Component specific modules (Component-styled, etc.)
 
 // App components
@@ -23,37 +25,17 @@ const LocatelyPopover = ({
   userSettings
 }) => {
   const [popperElement, setPopperElement] = useState(null);
-  const { styles, attributes } = usePopper(referenceElement, popperElement);
+  const { styles, attributes, update } = usePopper(referenceElement, popperElement);
+
+  // Fix position of popper when content loads
+  useEffect(() => {
+    if (referenceElement && locationDetails) {
+      update();
+    }
+  }, [referenceElement, locationDetails])
 
   const renderHtml = (snippet) => {
     return { __html: snippet || "lorem ipsum..." };
-  };
-
-  const abrevCount = (value) => {
-    var newValue = value;
-    if (value >= 1000) {
-      var suffixes = ["", "K", "M", "B", "T"];
-      var suffixNum = Math.floor(("" + value).length / 4);
-      var shortValue = "";
-      for (var precision = 2; precision >= 1; precision--) {
-        shortValue = parseFloat(
-          (suffixNum != 0
-            ? value / Math.pow(1000, suffixNum)
-            : value
-          ).toPrecision(precision)
-        );
-        var dotLessShortValue = (shortValue + "").replace(
-          /[^a-zA-Z 0-9]+/g,
-          ""
-        );
-        if (dotLessShortValue.length <= 2) {
-          break;
-        }
-      }
-      if (shortValue % 1 != 0) shortValue = shortValue.toFixed(1);
-      newValue = shortValue + suffixes[suffixNum];
-    }
-    return newValue;
   };
 
   const getAttrValue = ({ name, valueType, renderer }) => {
