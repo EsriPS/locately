@@ -63,6 +63,8 @@ const LocatelyApp = () => {
 
   const itemClicked = useCallback(
     (event) => {
+      const popoverNode = document.querySelector('.locately-wrapper');
+
       const city =
         event.target.attributes.getNamedItem("data-locately-city")?.value;
       const state = event.target.attributes.getNamedItem(
@@ -74,7 +76,8 @@ const LocatelyApp = () => {
 
         // Get location details and call setLocationDetails
         getDetailsForLocation({ city, state });
-      } else {
+      } else if (!popoverNode.contains(event.target)) {
+        // Prevents popover from closing if you click inside it
         setReferenceElement(null);
         setLocationDetails(null);
       }
