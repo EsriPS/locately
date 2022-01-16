@@ -40,6 +40,12 @@
         esriConfig.apiKey =
           "AAPK96fad6978240451fa5592219e9a7686bgn2mig5Td0pYlUH0pC-yuPDe8Q0PGBh4SrJtFbt2Ue-h04k7xtNbB69gMD48OigO";
 
+        const basemapThemes = {
+          "arcgis-navigation": "light",
+          "arcgis-streets-night": "dark",
+          "arcgis-imagery": "dark",
+        };
+
         // Default center and zoom (in case no coords are passed in)
         let city, state;
         let zoom = 4;
@@ -113,11 +119,22 @@
           const feature = response?.data?.results[0]?.value?.features[0];
 
           feature.geometry.type = "polygon";
-          feature.symbol = {
-            type: "simple-fill",
-            outline: { width: 1, color: [10, 10, 95, 1] },
-            color: [10, 10, 95, 0.05],
-          };
+
+          console.log({ basemap, basemapThemes });
+
+          if (basemapThemes[basemap] === "light") {
+            feature.symbol = {
+              type: "simple-fill",
+              outline: { width: 1, color: [10, 10, 95, 1] },
+              color: [10, 10, 95, 0.05],
+            };
+          } else {
+            feature.symbol = {
+              type: "simple-fill",
+              outline: { width: 1, color: [255, 0, 0, 1] },
+              color: [255, 0, 0, 0.05],
+            };
+          }
 
           // Create graphic
           const graphic = new Graphic(feature);
