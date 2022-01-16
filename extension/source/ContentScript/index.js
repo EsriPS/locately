@@ -35,18 +35,22 @@ const LocatelyApp = () => {
 
   const settingsOnChanged = useCallback((e) => {
     {
-      const updatedSettings = { ...settings };
+      const updatedSettings = {};
       Object.entries(e).forEach(
         ([key, { newValue }]) => (updatedSettings[key] = newValue)
       );
 
-      setSettings(updatedSettings);
-      setDataCollection(dataCollections[updatedSettings.dataCollection]);
+      setSettings(prevSettings => {
+        return {...prevSettings, ...updatedSettings};
+      });
+      if (updatedSettings.dataCollection) {
+        setDataCollection(dataCollections[updatedSettings.dataCollection]);
+      }
 
       setReferenceElement(null);
       setLocationDetails(null);
     }
-  }, []);
+  }, [setSettings]);
 
   // Set up the locately popover events
   useEffect(() => {
