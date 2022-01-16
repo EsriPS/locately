@@ -6,6 +6,7 @@ import { enrich, fetchPlaces, findStudyArea } from "./api";
 import { searchWikipedia } from "./wikipediaApi";
 
 import * as dataCollections from "./dataCollections";
+import defaultSettings from "../defaultSettings.json";
 
 const LocatelyApp = () => {
   const [locationDetails, setLocationDetails] = useState(null);
@@ -17,15 +18,10 @@ const LocatelyApp = () => {
 
   useEffect(() => {
     // Get initial setting value
-    chrome.storage.sync.get(
-      {
-        dataCollection: "Demographics",
-      },
-      (results) => {
-        setSettings(results);
-        setDataCollection(dataCollections[results.dataCollection]);
-      }
-    );
+    chrome.storage.sync.get(defaultSettings, (results) => {
+      setSettings(results);
+      setDataCollection(dataCollections[results.dataCollection]);
+    });
 
     // Detect settings changes and update
     chrome.storage.sync.onChanged.addListener(settingsOnChanged);
@@ -84,7 +80,7 @@ const LocatelyApp = () => {
   useEffect(() => {
     setTimeout(() => {
       getLocationsFromElements(document.body);
-    }, 2000)
+    }, 2000);
   }, []);
 
   // Send nodes to be searched
@@ -204,6 +200,7 @@ const LocatelyApp = () => {
       referenceElement={referenceElement}
       locationDetails={locationDetails}
       dataCollection={dataCollection}
+      userSettings={settings}
     />
   );
 };

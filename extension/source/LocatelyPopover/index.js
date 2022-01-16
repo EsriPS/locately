@@ -20,6 +20,7 @@ const LocatelyPopover = ({
   referenceElement,
   locationDetails,
   dataCollection,
+  userSettings
 }) => {
   const [popperElement, setPopperElement] = useState(null);
   const { styles, attributes } = usePopper(referenceElement, popperElement);
@@ -90,7 +91,10 @@ const LocatelyPopover = ({
         <>
           <div className="locately-visual-row">
             <div className="locately-map">
-              <Map place={locationDetails} />
+              <Map
+                place={locationDetails}
+                userSettings={userSettings}
+              />
             </div>
             <div className="locately-img">
               <img src={locationDetails.wpInfo.imageUrl} />

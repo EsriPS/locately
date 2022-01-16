@@ -1,19 +1,14 @@
 import React, { useState, useEffect } from "react";
-
+import defaultSettings from "../defaultSettings.json";
 import "./styles.scss";
 
 const Popup = () => {
   const [settings, setSettings] = useState(null);
 
   useEffect(() => {
-    chrome.storage.sync.get(
-      {
-        dataCollection: "Demographics",
-      },
-      (results) => {
-        setSettings(results);
-      }
-    );
+    chrome.storage.sync.get(defaultSettings, (results) => {
+      setSettings(results);
+    });
   }, []);
 
   const settingChanged = (e) => {

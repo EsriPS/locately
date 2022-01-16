@@ -43,6 +43,7 @@
         // Default center and zoom (in case no coords are passed in)
         let city, state;
         let zoom = 4;
+        let basemap = "arcgis-navigation";
         let coords = {
           x: -98,
           y: 38,
@@ -58,6 +59,12 @@
           coords = JSON.parse(params.get("coords"));
         }
 
+        // Get basemap preference from the URL
+        if (params.has("basemap")) {
+          basemap = params.get("basemap");
+        }
+
+        // Get city/state from the URL
         if (params.has("city") && params.has("state")) {
           city = params.get("city");
           state = params.get("state");
@@ -128,7 +135,7 @@
         // Construct a new JSAPI Map
         const map = new Map({
           // Use an ArcGIS Platform basemap service
-          basemap: "arcgis-navigation",
+          basemap,
         });
 
         // Construct a new JSAPI MapView
