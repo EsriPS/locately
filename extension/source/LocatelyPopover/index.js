@@ -105,7 +105,7 @@ const LocatelyPopover = ({
               dangerouslySetInnerHTML={renderHtml(
                 locationDetails.wpInfo.snippet
               )}
-            ></span>
+            />
             <span>
               ...{" "}
               <span className="locately-attribution">
