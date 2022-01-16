@@ -5,6 +5,8 @@ import LocatelyPopover from "../LocatelyPopover";
 import { enrich, fetchPlaces, findStudyArea } from "./api";
 import { searchWikipedia } from "./wikipediaApi";
 
+import { debounce } from "./utils";
+
 import * as dataCollections from "./dataCollections";
 import defaultSettings from "../defaultSettings.json";
 
@@ -78,10 +80,31 @@ const LocatelyApp = () => {
 
   // Detect dom changes so we can search the text
   useEffect(() => {
-    setTimeout(() => {
-      getLocationsFromElements(document.body);
-    }, 2000);
+    var observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        const filteredNodes = Array.from(mutation.addedNodes).filter(
+          (addedNode) => {
+            return !addedNode.parentNode?.attributes.getNamedItem(
+              "data-locately-city"
+            );
+          }
+        );
+        if (filteredNodes && filteredNodes.length > 0) {
+          debouncedDomUpdate();
+        }
+      });
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
   }, []);
+
+  const debouncedDomUpdate = debounce(() => {
+    // All the taxing stuff you do
+    getLocationsFromElements(document.body);
+  }, 500);
 
   // Send nodes to be searched
   const getLocationsFromElements = async (contentRoot) => {
@@ -136,11 +159,17 @@ const LocatelyApp = () => {
       );
 
     while ((node = nodeIterator.nextNode())) {
-      nodes.push({
-        textNode: node,
-        start: text.length,
-      });
-      text += node.nodeValue;
+      // Prevent many nested spans
+      if (
+        !node.parentNode?.classList?.contains("searchmatch") &&
+        !node.parentNode?.attributes?.getNamedItem("data-locately-city")
+      ) {
+        nodes.push({
+          textNode: node,
+          start: text.length,
+        });
+        text += node.nodeValue;
+      }
     }
 
     if (!nodes.length) return;

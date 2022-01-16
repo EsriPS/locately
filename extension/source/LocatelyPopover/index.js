@@ -96,16 +96,20 @@ const LocatelyPopover = ({
                 userSettings={userSettings}
               />
             </div>
-            <div className="locately-img">
+            <a
+              href={`https://www.google.com/search?q=${locationDetails.features[0].attributes.AreaName},%20${locationDetails.features[0].attributes.MajorSubdivisionAbbr}&tbm=isch`}
+              target="_blank"
+              className="locately-img"
+            >
               <img src={locationDetails.wpInfo.imageUrl} />
-            </div>
+            </a>
           </div>
           <div className="locately-description">
             <span
               dangerouslySetInnerHTML={renderHtml(
                 locationDetails.wpInfo.snippet
               )}
-            ></span>
+            />
             <span>
               ...{" "}
               <span className="locately-attribution">
