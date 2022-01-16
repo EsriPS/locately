@@ -7,12 +7,14 @@
   background: #fafafa;
   color: #1c2229;
   overflow: hidden;
-  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
+    sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
   font-size: 13px;
   line-height: 1.5;
 
   .locately-visual-row {
     display: flex;
+    background-color: #efefef;
 
     .locately-map,
     .locately-img {
@@ -80,6 +82,6 @@
 }
 
 *[data-locately-city] {
-  border-bottom: 3px ridge #6DCCA5;
+  border-bottom: 3px ridge #6dcca5;
   cursor: context-menu;
 }
