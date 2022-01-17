@@ -4,7 +4,6 @@ import {
   queryDemographicData,
 } from "@esri/arcgis-rest-demographics";
 
-import { Demographics } from "./dataCollections";
 import { places } from "./mockApi.json";
 
 // We'll use an ArcGIS Platform API Key to authenticate
@@ -32,7 +31,8 @@ const findStudyArea = async ({ city, state }) => {
     const studyArea = await getGeography({
       sourceCountry: "US",
       geographyLayers: ["US.Places"],
-      returnGeometry: false,
+      returnGeometry: true,
+      returnCentroids:true,
       featureLimit: 5,
       authentication,
       geographyQuery,
@@ -48,25 +48,30 @@ const findStudyArea = async ({ city, state }) => {
 /*
  * Send Standard Geography to ArcGIS to be enriched
  */
-const enrich = async (studyArea) => {
+const enrich = async (studyArea, dataCollection) => {
+  const feature = studyArea[0];
+
   // Assemble the `studyAreas` param
   const studyAreas = [
     {
       sourceCountry: "US",
       layer: "US.Places",
-      ids: [studyArea[0].attributes.AreaID],
-      attributes: studyArea[0].attributes,
+      ids: [feature.attributes.AreaID],
+      attributes: feature.attributes,
     },
   ];
 
   try {
     const response = await queryDemographicData({
       studyAreas,
-      analysisVariables: Demographics.variables,
+      analysisVariables: dataCollection.variables,
       authentication,
     });
 
-    return response.results[0].value.FeatureSet[0];
+    const result = response.results[0].value.FeatureSet[0];
+
+    // Add the original geometry back to the result
+    return { ...result, geometry: feature.geometry };
   } catch (error) {
     console.error(error);
   }

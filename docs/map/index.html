@@ -1,0 +1,197 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1, maximum-scale=1, user-scalable=no"
+    />
+    <title>locately map</title>
+
+    <style>
+      html,
+      body,
+      #mapView {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+
+    <link
+      rel="stylesheet"
+      href="https://js.arcgis.com/4.22/esri/themes/light/main.css"
+    />
+    <script src="https://js.arcgis.com/4.22/"></script>
+
+    <script>
+      require([
+        "esri/config",
+        "esri/Map",
+        "esri/views/MapView",
+        "esri/Graphic",
+        "esri/request",
+        "esri/core/watchUtils",
+      ], function (esriConfig, Map, MapView, Graphic, esriRequest, watchUtils) {
+        // Initialize global namespace
+        window.locately = { graphicReady: false };
+
+        // Set our ArcGIS Platform API Key
+        esriConfig.apiKey =
+          "AAPK96fad6978240451fa5592219e9a7686bgn2mig5Td0pYlUH0pC-yuPDe8Q0PGBh4SrJtFbt2Ue-h04k7xtNbB69gMD48OigO";
+
+        const basemapThemes = {
+          "arcgis-navigation": "light",
+          "arcgis-streets-night": "dark",
+          "arcgis-imagery": "dark",
+        };
+
+        // Default center and zoom (in case no coords are passed in)
+        let city, state;
+        let zoom = 4;
+        let basemap = "arcgis-navigation";
+        let coords = {
+          x: -98,
+          y: 38,
+        };
+
+        // Set the default map hyperlink
+        document.getElementById("mapLink").href =
+          "https://www.arcgis.com/apps/mapviewer/index.html";
+
+        // Get coords from the URL
+        const params = new URLSearchParams(window.location.search);
+        if (params.has("coords")) {
+          coords = JSON.parse(params.get("coords"));
+        }
+
+        // Get basemap preference from the URL
+        if (params.has("basemap")) {
+          basemap = params.get("basemap");
+        }
+
+        // Get city/state from the URL
+        if (params.has("city") && params.has("state")) {
+          city = params.get("city");
+          state = params.get("state");
+
+          const arcgisMapViewerUrl = `https://www.arcgis.com/apps/mapviewer/index.html?find=${city}, ${state}`;
+          document.getElementById("mapLink").href = arcgisMapViewerUrl;
+        }
+
+        /*
+         * Get a "Standard Geogaphy" object from ArcGIS to be used as studyAreas
+         */
+        const addGraphic = (mapView, graphic) => {
+          mapView.graphics.add(graphic);
+          const extent = graphic.geometry.extent.expand(1.1);
+          mapView.goTo(extent);
+
+          // NOTE: This will open the ArcGIS Online Map Viewer to the extent of the feature rather than using the 'find' parameter
+          // const arcgisMapViewerUrl = `https://www.arcgis.com/apps/mapviewer/index.html?extent=${extent.xmin},${extent.ymin},${extent.xmax},${extent.ymax}`;
+          // document.getElementById("mapLink").href = arcgisMapViewerUrl;
+        };
+
+        /*
+         * Get a "Standard Geogaphy" object from ArcGIS to be used as studyAreas
+         */
+        const findStudyArea = async ({ city, state }) => {
+          const body = new FormData();
+          body.append("f", "json");
+          body.append("sourceCountry", "US");
+
+          body.append("geographyLayers", ["US.Places"]);
+          body.append(
+            "geographyQuery",
+            `${city} AND MajorSubdivisionAbbr:${state}`
+          );
+          body.append("returnGeometry", "true");
+          body.append("featureLimit", 1);
+
+          let url =
+            "https://geoenrich.arcgis.com/arcgis/rest/services/World/geoenrichmentserver/StandardGeographyQuery/execute";
+
+          const response = await esriRequest(url, {
+            method: "post",
+            body,
+            responseType: "json",
+          });
+          const feature = response?.data?.results[0]?.value?.features[0];
+
+          feature.geometry.type = "polygon";
+
+          if (basemapThemes[basemap] === "light") {
+            feature.symbol = {
+              type: "simple-fill",
+              outline: { width: 1, color: [10, 10, 95, 1] },
+              color: [10, 10, 95, 0.05],
+            };
+          } else {
+            feature.symbol = {
+              type: "simple-fill",
+              outline: { width: 1, color: [255, 0, 0, 1] },
+              color: [255, 0, 0, 0.05],
+            };
+          }
+
+          // Create graphic
+          const graphic = new Graphic(feature);
+          window.locately.graphic = graphic;
+
+          if (window.locately.mapView) {
+            addGraphic(window.locately.mapView, graphic);
+          }
+        };
+
+        if (city && state) {
+          findStudyArea({ city, state });
+        }
+
+        // Construct a new JSAPI Map
+        const map = new Map({
+          // Use an ArcGIS Platform basemap service
+          basemap,
+        });
+
+        // Construct a new JSAPI MapView
+        const view = new MapView({
+          map,
+          center: [coords.x, coords.y],
+          zoom, // Zoom level
+          container: "mapView", // Div element
+        });
+
+        view.when(function () {
+          window.locately.mapView = view;
+
+          if (window.locately.graphic) {
+            addGraphic(view, window.locately.graphic);
+          }
+        });
+
+        // Clean up the UI
+        view.ui.components = ["attribution"];
+
+        // Disable various methods of navigation
+        view.on("drag", (event) => {
+          event.stopPropagation();
+        });
+
+        view.on("mouse-wheel", (event) => {
+          event.stopPropagation();
+        });
+
+        view.on("double-click", (event) => {
+          event.stopPropagation();
+        });
+
+        view.on("double-click", ["Control"], (event) => {
+          event.stopPropagation();
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <a id="mapLink" target="_blank"><div id="mapView"></div></a>
+  </body>
+</html>

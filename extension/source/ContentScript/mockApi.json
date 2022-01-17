@@ -1,7 +1,98 @@
 {
   "places": [
     {
+      "text": "Cleveland",
+      "city": "Cleveland",
+      "state": "OH"
+    },
+    {
+      "text": "Newark",
+      "city": "Newark",
+      "state": "NJ"
+    },
+    {
+      "text": "Princeton, New Jersey",
+      "city": "Princeton",
+      "state": "NJ"
+    },
+    {
+      "text": "Annapolis, Maryland",
+      "city": "Annapolis",
+      "state": "MD"
+    },
+    {
+      "text": "Trenton",
+      "city": "Trenton",
+      "state": "NJ"
+    },
+    {
+      "text": "Philadelphia",
+      "city": "Philadelphia",
+      "state": "PA"
+    },
+    {
+      "text": "Washington",
+      "city": "Washington",
+      "state": "DC"
+    },
+    {
+      "text": "North Olmsted",
+      "city": "North Olmsted",
+      "state": "OH"
+    },
+    {
+      "text": "Chicago",
+      "city": "Chicago",
+      "state": "IL"
+    },
+    {
+      "text": "Birmingham",
+      "city": "Birmingham",
+      "state": "AL"
+    },
+    {
+      "text": "Omaha",
+      "city": "Omaha",
+      "state": "NE"
+    },
+    {
+      "text": "Canton, S.D.",
+      "city": "Canton",
+      "state": "SD"
+    },
+    {
+      "text": "Los Angeles",
+      "city": "Los Angeles",
+      "state": "CA"
+    },
+    {
+      "text": "La Mesa, Calif.",
+      "city": "La Mesa",
+      "state": "CA"
+    },
+    {
+      "text": "New York City",
+      "city": "New York City",
+      "state": "NY"
+    },
+    {
+      "text": "Sheboygan Falls",
+      "city": "Sheboygan Falls",
+      "state": "WI"
+    },
+    {
+      "text": "Neguanee",
+      "city": "Neguanee",
+      "state": "MI"
+    },
+
+    {
       "text": "BOULDER, Colo",
+      "city": "Boulder",
+      "state": "CO"
+    },
+    {
+      "text": "Boulder",
       "city": "Boulder",
       "state": "CO"
     },

@@ -1,29 +1,70 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import ReactDOM from "react-dom";
 
 import LocatelyPopover from "../LocatelyPopover";
 import { enrich, fetchPlaces, findStudyArea } from "./api";
-import { searchWikipedia } from './wikipediaApi';
+import { searchWikipedia } from "./wikipediaApi";
 
-import { Demographics } from "./dataCollections";
+import { debounce } from "../utils";
+
+import * as dataCollections from "./dataCollections";
+import defaultSettings from "../defaultSettings.json";
 
 const LocatelyApp = () => {
   const [locationDetails, setLocationDetails] = useState(null);
   const [referenceElement, setReferenceElement] = useState(null);
-  const [dataCollection, setDataCollection] = useState(Demographics);
+  const [dataCollection, setDataCollection] = useState(
+    dataCollections.Demographics
+  );
+  const [settings, setSettings] = useState(null);
 
-  // Get the user's settings
-  // chrome.storage.sync.get({
-  //   favoriteColor: 'red',
-  //   likesColor: true
-  // }, function(items) {
-  //   document.getElementById('color').value = items.favoriteColor;
-  //   document.getElementById('like').checked = items.likesColor;
-  // });
+  useEffect(() => {
+    // Get initial setting value
+    chrome.storage.sync.get(defaultSettings, (results) => {
+      setSettings(results);
+      setDataCollection(dataCollections[results.dataCollection]);
+    });
+
+    // Detect settings changes and update
+    chrome.storage.sync.onChanged.addListener(settingsOnChanged);
+
+    return () => {
+      chrome.storage.sync.onChanged.removeListener(settingsOnChanged);
+    };
+  }, [settingsOnChanged]);
+
+  const settingsOnChanged = useCallback((e) => {
+    {
+      const updatedSettings = {};
+      Object.entries(e).forEach(
+        ([key, { newValue }]) => (updatedSettings[key] = newValue)
+      );
+
+      setSettings(prevSettings => {
+        return {...prevSettings, ...updatedSettings};
+      });
+      if (updatedSettings.dataCollection) {
+        setDataCollection(dataCollections[updatedSettings.dataCollection]);
+      }
+
+      setReferenceElement(null);
+      setLocationDetails(null);
+    }
+  }, [setSettings]);
 
   // Set up the locately popover events
   useEffect(() => {
-    document.body.addEventListener("click", function (event) {
+    document.body.addEventListener("click", itemClicked);
+
+    return () => {
+      document.body.removeEventListener("click", itemClicked);
+    };
+  }, [itemClicked, dataCollection]);
+
+  const itemClicked = useCallback(
+    (event) => {
+      const popoverNode = document.querySelector('.locately-wrapper');
+
       const city =
         event.target.attributes.getNamedItem("data-locately-city")?.value;
       const state = event.target.attributes.getNamedItem(
@@ -35,16 +76,42 @@ const LocatelyApp = () => {
 
         // Get location details and call setLocationDetails
         getDetailsForLocation({ city, state });
-      } else {
+      } else if (!popoverNode.contains(event.target)) {
+        // Prevents popover from closing if you click inside it
         setReferenceElement(null);
+        setLocationDetails(null);
       }
-    });
-  }, [setReferenceElement]);
+    },
+    [dataCollection, settings]
+  );
 
   // Detect dom changes so we can search the text
   useEffect(() => {
-    getLocationsFromElements(document.body);
+    var observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        const filteredNodes = Array.from(mutation.addedNodes).filter(
+          (addedNode) => {
+            return !addedNode.parentNode?.attributes.getNamedItem(
+              "data-locately-city"
+            );
+          }
+        );
+        if (filteredNodes && filteredNodes.length > 0) {
+          debouncedDomUpdate();
+        }
+      });
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
   }, []);
+
+  const debouncedDomUpdate = debounce(() => {
+    // All the taxing stuff you do
+    getLocationsFromElements(document.body);
+  }, 500);
 
   // Send nodes to be searched
   const getLocationsFromElements = async (contentRoot) => {
@@ -78,9 +145,9 @@ const LocatelyApp = () => {
   // Send locations to get geo-enriched
   const getDetailsForLocation = async ({ city, state }) => {
     const studyAreas = await findStudyArea({ city, state });
-    const enrichedPlaces = await enrich(studyAreas);
+    const enrichedPlaces = await enrich(studyAreas, dataCollection);
     const wpInfo = await searchWikipedia(`${city}, ${state}`);
-    setLocationDetails({wpInfo, ...enrichedPlaces});
+    setLocationDetails({ wpInfo, ...enrichedPlaces });
   };
 
   // Update dom with data attributes
@@ -99,11 +166,17 @@ const LocatelyApp = () => {
       );
 
     while ((node = nodeIterator.nextNode())) {
-      nodes.push({
-        textNode: node,
-        start: text.length,
-      });
-      text += node.nodeValue;
+      // Prevent many nested spans
+      if (
+        !node.parentNode?.classList?.contains("searchmatch") &&
+        !node.parentNode?.attributes?.getNamedItem("data-locately-city")
+      ) {
+        nodes.push({
+          textNode: node,
+          start: text.length,
+        });
+        text += node.nodeValue;
+      }
     }
 
     if (!nodes.length) return;
@@ -163,6 +236,7 @@ const LocatelyApp = () => {
       referenceElement={referenceElement}
       locationDetails={locationDetails}
       dataCollection={dataCollection}
+      userSettings={settings}
     />
   );
 };
