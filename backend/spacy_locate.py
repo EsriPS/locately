@@ -8,6 +8,7 @@ pip install geopy
 
 """
 
+import json
 import spacy
 import pandas as pd
 import geopy 
@@ -15,6 +16,7 @@ import matplotlib.pyplot as plt
 import requests
 from bs4 import BeautifulSoup #Parses HTML content
 from geopy.extra.rate_limiter import RateLimiter
+import json
 
 
 
@@ -87,4 +89,20 @@ df_places['city'] = cities
 df_places['state'] = states
 df_places['country'] = countries
 
-print(df_places)
+# write the us cities to json file
+
+df_export = df_places.loc[(df_places['country'] == 'United States') & (df_places['state'] != '') & (df_places['city'] != '')]
+
+out_dict = []
+
+for idx, row in df_export.iterrows():
+    out_dict.append(
+        {'city': row['city'],
+        'state': row['state']}
+    )
+
+out_json = r"C:\Projects\HTM_2022\locately\locations.json"
+
+f = open(out_json, "w")
+json.dump(out_dict, f)
+f.close()
