@@ -47,7 +47,7 @@ locately uses ArcGIS Platform in a few distinct ways:
 
 ## Roadmap
   
-![locately roadmap](https://esrips.github.io/locately/locately-roadmap-notes.png)
+![locately roadmap](https://esrips.github.io/locately/locately-roadmap.png)
 
 
   
