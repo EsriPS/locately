@@ -18,7 +18,9 @@ The page's text is sent to the backend for some natural language processing (NLP
 
 ### The backend is pretty rad, too...
 
-Once the backend
+Once the backend receives text, it uses the SpaCy library to execute NLP. NLP is a form of deep learning that understands linguistic context and dependencies between words to split text into meaningful tokens, and then names them as real-world objects (e.g., person, date, or place). The trained model leveraged by the backend has learned from conversational phone speech, news articles, blogs and more to complete this task. 
+
+From the collection of meaningful tokens identified, just the location-types are isolated. The location tokens are then supplemented with additional spatial information. An open source geocoder, from the geopy library, is used to match location entities with geographic keywords that can be used as inputs to the Geoenrichment API.
   
 ### Enter ArcGIS Platform...
   
@@ -33,7 +35,7 @@ TL;DR: locately uses the following ArcGIS Platform services, APIs, and tools:
 
 locately uses ArcGIS Platform in a few distinct ways:
   
-  1. After the backend runs the NLP to identify place entities, it uses the Geocoding service to gather more details [[view code](https://github.com/EsriPS/locately/blob/main/backend/spacy_glo.ipynb)]
+  1. After the backend runs the NLP to identify place entities, it uses the Geocoding service to gather more details [[view code](https://github.com/EsriPS/locately/blob/main/backend/spacy_locate.py)]
   
   2. Back on the frontend, the browser extension uses both the [Standard geography query](https://developers.arcgis.com/rest/geoenrichment/api-reference/standard-geography-query.htm) and [Enrich](https://developers.arcgis.com/rest/geoenrichment/api-reference/enrich.htm) tasks from the GeoEnrichment service in order to fetch data variables for displaying to the end user. All the heavy lifting here is done by one of our favorite ArcGIS Platform APIs, [ArcGIS REST JS](https://developers.arcgis.com/arcgis-rest-js). [[view code](https://github.com/EsriPS/locately/blob/main/extension/source/ContentScript/api.js)]
   
