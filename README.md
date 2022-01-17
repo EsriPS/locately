@@ -41,6 +41,16 @@ locately uses ArcGIS Platform in a few distinct ways:
   
   3. Finally, the map users see in the locately popover is built with another ArcGIS Platform API, the [ArcGIS API for JavaScript](https://developers.arcgis.com/javascript/latest). The JSAPI leverages the `geometry` returned by the GeoEnrichment service as well as [ArcGIS Platform's basemap layer service](https://developers.arcgis.com/documentation/mapping-apis-and-services/maps/basemap-layers) to show a contextual map to users. Users can even click the map to go directly to that place in the [Map Viewer](https://developers.arcgis.com/documentation/mapping-apis-and-services/tools/mapviewer)! [[view code](https://github.com/EsriPS/locately/blob/main/docs/map/index.html)]
 
+## Solution Overview
+  
+![locately solution overview](https://esrips.github.io/locately/locately-overview.png)
+
+## Roadmap
+  
+![locately roadmap](https://esrips.github.io/locately/locately-roadmap-notes.png)
+
+
+  
 <!-- ## Core Team
   
 You are more than welcome to reach out to the core team members listed below, but we highly recommend asking questions or proposing ideas within this repo (via [Issues](https://github.com/EsriPS/innersource-template/issues) or [Discussions](https://github.com/EsriPS/innersource-template/discussions)) so we can keep everything transparent and discoverable!
