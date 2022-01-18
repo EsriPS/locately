@@ -2,16 +2,17 @@
 import arcpy
 import spacy
 import pandas as pd
-import geopy
-import warnings
-warnings.filterwarnings("ignore")
+
+from arcgis.geocoding import geocode
+from arcgis.gis import GIS
+
 
 class Toolbox(object):
     def __init__(self):
         """Define the toolbox (the name of the toolbox is the name of the
         .pyt file)."""
-        self.label = "Toolbox"
-        self.alias = "toolbox"
+        self.label = "test"
+        self.alias = "test"
 
         # List of tool classes associated with this toolbox
         self.tools = [NERtoolset]
@@ -19,8 +20,8 @@ class Toolbox(object):
 class NERtoolset(object):
     def __init__(self):
         """Define the tool (tool name is the name of the class)."""
-        self.label = "NER_Toolbox"
-        self.description = ""
+        self.label = "NERToolbox"
+        self.description = "sample"
         self.canRunInBackground = False
 
     def getParameterInfo(self):
@@ -32,6 +33,20 @@ class NERtoolset(object):
             parameterType="Required",
             direction="Input")
 
+        user_name = arcpy.Parameter(
+            displayName="Username",
+            name="user_name",
+            datatype="GPString",
+            parameterType="Required",
+            direction="Input")
+
+        user_pass = arcpy.Parameter(
+            displayName="Password",
+            name="user_pass",
+            datatype="GPString",
+            parameterType="Required",
+            direction="Input")
+
         output_response = arcpy.Parameter(
             displayName="Output Response",
             name="output_response",
@@ -39,7 +54,7 @@ class NERtoolset(object):
             parameterType="Derived",
             direction="Output")
 
-        params = [input_strings, output_response]
+        params = [input_strings, user_name, user_pass, output_response]
         return params
 
     def isLicensed(self):
@@ -60,55 +75,41 @@ class NERtoolset(object):
     def execute(self, parameters, messages):
         """The source code of the tool."""
         text = parameters[0].valueAsText
-        arcpy.AddMessage(text)
-
+        user_name = parameters[1].valueAsText
+        user_pass = parameters[2].valueAsText
+      
         # load the spacy model
         nlp = spacy.load("en_core_web_lg")
-
         # process the text
-        arcpy.AddMessage(text)
         doc = nlp(text)
 
         tokens = []
 
         tokens.extend([[ent.text, ent.start, ent.end, ent.label_, spacy.explain(ent.label_)] for ent in doc.ents])
-        df_all = pd.DataFrame(tokens, columns=['Location', 'start','end', 'label', 'meaning'])
+        df_all = pd.DataFrame(tokens, columns=["Location", "start","end", "label", "meaning"])
 
         # Just the locations
-        loc_codes = ['GPE', 'LOC']
-        df_places = df_all.loc[df_all['label'].isin(loc_codes)]
+        loc_codes = ["GPE", "LOC"]
+        df_places = df_all.loc[df_all["label"].isin(loc_codes)]
+
+        gis = GIS("https://zaaberg.esri.com/portal",user_name,user_pass)
 
         # GeoCode the locations
-        locator = geopy.geocoders.Nominatim(user_agent='mygeocoder')
-        locations = [locator.geocode(loc, addressdetails=True) for loc in list(df_places['Location'])]
+        arcpy.AddMessage(list(df_places.loc[:, ("Location")]))
+        locations = [geocode(loc)[0] for loc in list(df_places.loc[:, ("Location")])]
 
         out_dict = []
         for loc in locations:
             if loc is not None:
-                add = loc.raw['address']
-                add_parts = list(add.keys())
 
-                if 'city' in add_parts:
-                    out_dict.append(
-                        {'city': add['city'],
-                        'state': add['state']})
+                loc_type = loc["attributes"]["Type"]
 
-                elif 'town' in add_parts:
+                if loc_type=="City":
                     out_dict.append(
-                        {'city': add['town'],
-                        'state': add['state']})
-            else:
-                pass
+                        {"city": loc["attributes"]["City"],
+                        "state": loc["attributes"]["Region"]})
 
         arcpy.AddMessage(out_dict)
-        arcpy.SetParameterAsText(1, out_dict)
-
-    # Uncomment below if you want a JSON file written to the scratch folder.
-        # import json
-        # import os.path
-        # out_json = os.path.join(arcpy.env.scratchFolder, "locations.json")
-        # f = open(out_json, "w")
-        # json.dump(out_dict, f)
-        # f.close()
+        arcpy.SetParameterAsText(3, out_dict)
 
         return
