@@ -118,11 +118,56 @@
   td {
     width: 9rem;
   }
+
+  @media only screen and (max-width: 1230px) {
+    .center {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .install, .roadmap, .main {
+      margin-left: 0%;
+      margin-bottom: 2%;
+
+    }
+
+    .roadmap {
+      width: fit-content;
+    }
+
+    .install {
+      width: 60%;
+    }
+  }
+
+  @media only screen and (max-width: 850px) {
+    .install {
+      width: 90%;
+    }
+
+    h1 {
+      font-size: 5rem;
+      margin-bottom: 2.5rem;
+    }
+    h2 { 
+      font-size: 2rem;
+      width: fit-content;
+    }
+    p {
+      width: fit-content;
+    }
+    .main {
+      width: 90%;
+    }
+  }
   
 
 </style>
 
 <body>
+  <div class="center">
       <div class = "install">
       <img src   = "./logo.jpg" height = "40%" width = "40%"/>
         <div>
@@ -177,7 +222,6 @@
       </table> 
     </div>
   </div>
-
 </body>
 
 </html>
