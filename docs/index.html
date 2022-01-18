@@ -24,6 +24,7 @@
     text-decoration      : underline;
     text-decoration-color: #6DCCA5;
     line-height          : 1rem;
+    margin-bottom: 5rem;
   }
 
   h2 {
@@ -36,7 +37,7 @@
   }
 
   h3 {
-    font-size  : 3rem;
+    font-size  : 2rem;
     line-height: 1rem;
     font-family: halcom, sans-serif;
     font-weight: 200;
@@ -44,8 +45,8 @@
     margin-top : 1rem;
   }
 
-  p, li, button {
-    font-size  : 1.25rem;
+  tr, p, li, button {
+    font-size  : 1rem;
     font-weight: 200;
   }
 
@@ -54,7 +55,6 @@
     color           : #0A0A5f;
     border-style    : none;
     padding         : 1rem;
-    font-size       : 1.25rem;
   }
 
   button:hover {
@@ -65,22 +65,59 @@
   .install {
     border-style    : solid;
     border-color    : #6DCCA5;
-    border-width    : 8px;
+    border-width    : 4px;
     background-color: #EBE0DE;
     color           : #0A0A5f;
     display         : flex;
     flex-direction  : row;
-    gap             : 2rem;
+    gap             : 1rem;
     width           : 40%;
     margin-left     : 30%;
-    margin-top      : 5%;
+    margin-top      : 2.5%;
     height          : auto;
-    padding         : 2rem;
+    padding         : 1rem;
+    margin-bottom: 8rem;
   }
 
   .main {
     margin-left: 15%;
   }
+
+  .roadmap {
+    color: #EBE0DE;
+    border-style    : solid;
+    border-color    : #6DCCA5;
+    border-width    : 4px;
+    margin-left     : 40%;
+    margin-top      : 4%;
+    padding         : 1rem;
+    width: 50%;
+  }
+
+  tr, td, table {
+    padding: 0.75rem;
+    text-align: left;  
+    border-collapse: collapse;
+  }
+
+  tr:nth-of-type(2){
+    color: #0A0A5f;
+    background-color: #6DCCA5;
+    border-color: #6DCCA5;
+  }
+
+  td:nth-of-type(1){
+    width: fit-content;
+  }
+
+  th{
+    padding-bottom: 1rem;
+  }
+
+  td {
+    width: 9rem;
+  }
+  
 
 </style>
 
@@ -90,12 +127,12 @@
         <div>
           <h3> installation</h3>
           <button> Download </button>
-          <ul> 
+          <ol> 
             <li> step 1 </li>
             <li> step 2 </li>
             <li> step 3 </li>
             <li> step 4 </li>
-          </ul>
+          </ol>
         </div>
       </div>
     <div class = "main" style = "color: #EBE0DE">
@@ -106,6 +143,7 @@
       </p>
     </div>
     <div class = "roadmap">
+      <h3> roadmap</h3>
       <table>
         <tr class="current">
           <th>Version</th>
