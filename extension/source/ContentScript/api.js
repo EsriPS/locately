@@ -3,6 +3,7 @@ import {
   getGeography,
   queryDemographicData,
 } from "@esri/arcgis-rest-demographics";
+import { request } from "@esri/arcgis-rest-request";
 
 import { places } from "./mockApi.json";
 
@@ -15,8 +16,19 @@ const authentication = new ApiKey({
  * Send text to LocateXT-like API and get back "place" objects
  */
 const fetchPlaces = async (text) => {
-  // TODO: Replace with actual API request
-  return await places;
+  const url = 'https://apimocha.com/locately/lookup';
+
+  try {
+    const response = await request(url, {
+      httpMethod: "post",
+    });
+
+    return response.places;
+
+  } catch (error) {
+    console.error(error);
+    return places;
+  }
 };
 
 /*
@@ -32,7 +44,7 @@ const findStudyArea = async ({ city, state }) => {
       sourceCountry: "US",
       geographyLayers: ["US.Places"],
       returnGeometry: true,
-      returnCentroids:true,
+      returnCentroids: true,
       featureLimit: 5,
       authentication,
       geographyQuery,

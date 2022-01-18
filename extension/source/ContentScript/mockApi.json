@@ -11,12 +11,12 @@
       "state": "NJ"
     },
     {
-      "text": "Princeton, New Jersey",
+      "text": "Princeton",
       "city": "Princeton",
       "state": "NJ"
     },
     {
-      "text": "Annapolis, Maryland",
+      "text": "Annapolis",
       "city": "Annapolis",
       "state": "MD"
     },
@@ -24,11 +24,6 @@
       "text": "Trenton",
       "city": "Trenton",
       "state": "NJ"
-    },
-    {
-      "text": "Philadelphia",
-      "city": "Philadelphia",
-      "state": "PA"
     },
     {
       "text": "Washington",
@@ -56,7 +51,7 @@
       "state": "NE"
     },
     {
-      "text": "Canton, S.D.",
+      "text": "Canton",
       "city": "Canton",
       "state": "SD"
     },
@@ -66,7 +61,7 @@
       "state": "CA"
     },
     {
-      "text": "La Mesa, Calif.",
+      "text": "La Mesa",
       "city": "La Mesa",
       "state": "CA"
     },
@@ -85,12 +80,6 @@
       "city": "Neguanee",
       "state": "MI"
     },
-
-    {
-      "text": "BOULDER, Colo",
-      "city": "Boulder",
-      "state": "CO"
-    },
     {
       "text": "Boulder",
       "city": "Boulder",
@@ -102,14 +91,244 @@
       "state": "CO"
     },
     {
+      "text": "Lafayette",
+      "city": "Lafayette",
+      "state": "CO"
+    },
+    {
+      "text": "Houston",
+      "city": "Houston",
+      "state": "TX"
+    },
+    {
+      "text": "Philadelphia",
+      "city": "Philadelphia",
+      "state": "PA"
+    },
+    {
+      "text": "Phoenix",
+      "city": "Phoenix",
+      "state": "AZ"
+    },
+    {
+      "text": "San Antonio",
+      "city": "San Antonio",
+      "state": "TX"
+    },
+    {
+      "text": "San Diego",
+      "city": "San Diego",
+      "state": "CA"
+    },
+    {
+      "text": "Dallas",
+      "city": "Dallas",
+      "state": "TX"
+    },
+    {
+      "text": "San Jose",
+      "city": "San Jose",
+      "state": "CA"
+    },
+    {
+      "text": "Austin",
+      "city": "Austin",
+      "state": "TX"
+    },
+    {
+      "text": "Indianapolis",
+      "city": "Indianapolis",
+      "state": "IN"
+    },
+    {
+      "text": "Jacksonville",
+      "city": "Jacksonville",
+      "state": "FL"
+    },
+    {
+      "text": "San Francisco",
+      "city": "San Francisco",
+      "state": "CA"
+    },
+    {
+      "text": "Columbus",
+      "city": "Columbus",
+      "state": "OH"
+    },
+    {
+      "text": "Charlotte",
+      "city": "Charlotte",
+      "state": "NC"
+    },
+    {
+      "text": "Fort Worth",
+      "city": "Fort Worth",
+      "state": "TX"
+    },
+    {
+      "text": "Detroit",
+      "city": "Detroit",
+      "state": "MI"
+    },
+    {
+      "text": "El Paso",
+      "city": "El Paso",
+      "state": "TX"
+    },
+    {
+      "text": "Memphis",
+      "city": "Memphis",
+      "state": "TN"
+    },
+    {
+      "text": "Seattle",
+      "city": "Seattle",
+      "state": "WA"
+    },
+    {
+      "text": "Boston",
+      "city": "Boston",
+      "state": "MA"
+    },
+    {
+      "text": "Nashville",
+      "city": "Nashville",
+      "state": "TN"
+    },
+    {
+      "text": "Baltimore",
+      "city": "Baltimore",
+      "state": "MD"
+    },
+    {
+      "text": "Oklahoma City",
+      "city": "Oklahoma City",
+      "state": "OK"
+    },
+    {
       "text": "Louisville",
       "city": "Louisville",
       "state": "CO"
     },
     {
-      "text": "Lafayette",
-      "city": "Lafayette",
+      "text": "Portland",
+      "city": "Portland",
+      "state": "OR"
+    },
+    {
+      "text": "Las Vegas",
+      "city": "Las Vegas",
+      "state": "NV"
+    },
+    {
+      "text": "Milwaukee",
+      "city": "Milwaukee",
+      "state": "WI"
+    },
+    {
+      "text": "Albuquerque",
+      "city": "Albuquerque",
+      "state": "NM"
+    },
+    {
+      "text": "Tucson",
+      "city": "Tucson",
+      "state": "AZ"
+    },
+    {
+      "text": "Fresno",
+      "city": "Fresno",
+      "state": "CA"
+    },
+    {
+      "text": "Sacramento",
+      "city": "Sacramento",
+      "state": "CA"
+    },
+    {
+      "text": "Long Beach",
+      "city": "Long Beach",
+      "state": "CA"
+    },
+    {
+      "text": "Kansas City",
+      "city": "Kansas City",
+      "state": "MO"
+    },
+    {
+      "text": "Mesa",
+      "city": "Mesa",
+      "state": "AZ"
+    },
+    {
+      "text": "Virginia Beach",
+      "city": "Virginia Beach",
+      "state": "VA"
+    },
+    {
+      "text": "Atlanta",
+      "city": "Atlanta",
+      "state": "GA"
+    },
+    {
+      "text": "Colorado Springs",
+      "city": "Colorado Springs",
       "state": "CO"
+    },
+    {
+      "text": "Omaha",
+      "city": "Omaha",
+      "state": "NE"
+    },
+    {
+      "text": "Raleigh",
+      "city": "Raleigh",
+      "state": "NC"
+    },
+    {
+      "text": "Miami",
+      "city": "Miami",
+      "state": "FL"
+    },
+    {
+      "text": "Oakland",
+      "city": "Oakland",
+      "state": "CA"
+    },
+    {
+      "text": "Minneapolis",
+      "city": "Minneapolis",
+      "state": "MN"
+    },
+    {
+      "text": "Tulsa",
+      "city": "Tulsa",
+      "state": "OK"
+    },
+    {
+      "text": "Cleveland",
+      "city": "Cleveland",
+      "state": "OH"
+    },
+    {
+      "text": "Wichita",
+      "city": "Wichita",
+      "state": "KS"
+    },
+    {
+      "text": "Arlington",
+      "city": "Arlington",
+      "state": "TX"
+    },
+    {
+      "text": "New Orleans",
+      "city": "New Orleans",
+      "state": "LA"
+    },
+    {
+      "text": "Redlands",
+      "city": "Redlands",
+      "state": "CA"
     }
   ]
 }
