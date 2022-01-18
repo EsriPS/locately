@@ -35,7 +35,7 @@ TL;DR: locately uses the following ArcGIS Platform services, APIs, and tools:
 
 locately uses ArcGIS Platform in a few distinct ways:
   
-  1. After the backend runs the NLP to identify place entities, ~~it uses the Geocoding service~~ to gather more details [[view code](https://github.com/EsriPS/locately/blob/main/backend/locately_tools.pyt)]
+  1. After the backend runs the NLP to identify place entities, it uses the Geocoding service to gather more details [[view code](https://github.com/EsriPS/locately/blob/main/backend/locately_tools.pyt)]
   
   2. Back on the frontend, the browser extension uses both the [Standard geography query](https://developers.arcgis.com/rest/geoenrichment/api-reference/standard-geography-query.htm) and [Enrich](https://developers.arcgis.com/rest/geoenrichment/api-reference/enrich.htm) tasks from the GeoEnrichment service in order to fetch data variables for displaying to the end user. All the heavy lifting here is done by one of our favorite ArcGIS Platform APIs, [ArcGIS REST JS](https://developers.arcgis.com/arcgis-rest-js). [[view code](https://github.com/EsriPS/locately/blob/main/extension/source/ContentScript/api.js)]
   
