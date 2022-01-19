@@ -1,4 +1,5 @@
 {
   "dataCollection": "Demographics",
-  "basemap": "arcgis-imagery"
+  "basemap": "arcgis-imagery",
+  "triggerOn": "mouseover"
 }

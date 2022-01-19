@@ -1,9 +1,12 @@
+@import "react-loading-skeleton/dist/skeleton.css";
+
 .locately-wrapper {
   z-index: 999;
   border-radius: 5px;
   box-shadow: 0 6px 20px -4px rgba(0, 0, 0, 0.1),
     0 4px 12px -2px rgba(0, 0, 0, 0.08);
   width: 400px;
+  min-height: 300px;
   background: #fafafa;
   color: #1c2229;
   overflow: hidden;
@@ -82,6 +85,28 @@
 }
 
 *[data-locately-city] {
-  border-bottom: 3px ridge #6dcca5;
-  cursor: context-menu;
+  position: relative;
+  border-bottom: 2px solid rgba(109, 204, 165, 0.8);
+  border-radius: 2px;
+  transition: border-bottom 150ms ease-in-out;
+
+  &::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 100%;
+    border-radius: 2px;
+    background-color: rgba(109, 204, 165, 0.2);
+    transition: top 100ms ease-out;
+  }
+
+  &:hover {
+    border-bottom-color: rgba(109, 204, 165, 1);
+
+    &::before {
+      top: 0;
+    }
+  }
 }

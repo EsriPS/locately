@@ -2,10 +2,9 @@
 @import "../styles/reset";
 
 body {
-  color: #0A0A5f;
+  color: #0a0a5f;
   background-color: #efefef;
 }
-
 
 #SettingsPopup {
   min-width: 300px;
@@ -13,7 +12,8 @@ body {
   color: #333;
   font-family: halcom, sans-serif;
 
-  h2, h3 {
+  h2,
+  h3 {
     font-size: 21px;
     margin: 0;
     text-align: center;
@@ -32,7 +32,7 @@ body {
     font-style: normal;
   }
 
-  p {
+  div.input-container {
     display: inline-block;
     width: 100%;
     margin: 25px 0 5px;
@@ -50,11 +50,11 @@ body {
     cursor: pointer;
 
     &.selected {
-      border-color: #6DCCA5;
+      border-color: #6dcca5;
     }
 
     &:hover {
-      opacity: .8;
+      opacity: 0.8;
     }
 
     &:last-of-type {
@@ -87,15 +87,80 @@ body {
     }
 
     &.selected {
-      border-color: #6DCCA5;
+      border-color: #6dcca5;
     }
 
     &:hover {
-      opacity: .8;
+      opacity: 0.8;
     }
 
     img {
       filter: none;
+    }
+  }
+
+  // --------------------
+  // Toogle Switch Checkbox
+  .checkboxContainer {
+    display: flex;
+    align-items: center;
+    height: 18px;
+    margin-top: 20px;
+
+    span {
+      display: inline-block;
+      font-size: 14px;
+      cursor: pointer;
+
+      &:hover {
+        opacity: .8;
+      }
+
+      &:first-child {
+        margin-inline-end: 1rem;
+      }
+      &:last-child {
+        margin-inline-start: 1rem;
+      }
+    }
+  }
+
+  input[type="checkbox"] {
+    position: relative;
+    width: 36px;
+    height: 18px;
+    -webkit-appearance: none;
+    -webkit-appearance: none;
+    background: #c6c6c6;
+    outline: none;
+    cursor: pointer;
+    border-radius: 20px;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    transition: background 300ms linear;
+
+    // circle
+    &::before {
+      position: absolute;
+      content: "";
+      width: 18px;
+      height: 18px;
+      top: 0px;
+      left: 0px;
+      border-radius: 20px;
+      background-color: #fff;
+      transform: scale(1.1);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      transition: left 300ms linear;
+    }
+
+    // move to right
+    &:checked {
+      background: #6dcca5;
+
+      &::before {
+        left: 18px;
+        background-color: #fff;
+      }
     }
   }
 }

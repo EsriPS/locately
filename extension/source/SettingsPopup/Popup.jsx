@@ -33,11 +33,21 @@ const Popup = () => {
     setSettings({ ...settings, basemap: value });
   };
 
+  const triggerOnChanged = (value) => {
+    console.log(value);
+    chrome.storage.sync.set(
+      {
+        triggerOn: value,
+      } // object
+    );
+    setSettings({ ...settings, triggerOn: value });
+  };
+
   return (
     <section id="SettingsPopup">
       <h2>Locately Settings</h2>
       <form>
-        <p>
+        <div className="input-container">
           <h3 htmlFor="dataCollection">I'm interested in...</h3>
           <br />
           <label
@@ -96,9 +106,9 @@ const Popup = () => {
             />
             <i>📈</i>Economy
           </label>
-        </p>
+        </div>
 
-        <p>
+        <div className="input-container">
           <h3 htmlFor="basemap">Basemap</h3>
           <br />
           <label
@@ -166,7 +176,22 @@ const Popup = () => {
               Satellite
             </span>
           </label>
-        </p>
+        </div>
+
+        <div className="input-container">
+          <h3 htmlFor="triggerOn">Trigger On...</h3>
+          <div className="checkboxContainer">
+            <span onClick={() => triggerOnChanged("click")}>Click</span>
+            <input
+              type="checkbox"
+              checked={settings?.triggerOn === "mouseover"}
+              onChange={(e) =>
+                triggerOnChanged(e.target.checked ? "mouseover" : "click")
+              }
+            />
+            <span onClick={() => triggerOnChanged("mouseover")}>Hover</span>
+          </div>
+        </div>
       </form>
     </section>
   );

@@ -33,56 +33,68 @@ const LocatelyApp = () => {
     };
   }, [settingsOnChanged]);
 
-  const settingsOnChanged = useCallback((e) => {
-    {
-      const updatedSettings = {};
-      Object.entries(e).forEach(
-        ([key, { newValue }]) => (updatedSettings[key] = newValue)
-      );
+  const settingsOnChanged = useCallback(
+    (e) => {
+      {
+        const updatedSettings = {};
+        Object.entries(e).forEach(
+          ([key, { newValue }]) => (updatedSettings[key] = newValue)
+        );
 
-      setSettings(prevSettings => {
-        return {...prevSettings, ...updatedSettings};
-      });
-      if (updatedSettings.dataCollection) {
-        setDataCollection(dataCollections[updatedSettings.dataCollection]);
-      }
+        setSettings((prevSettings) => {
+          return { ...prevSettings, ...updatedSettings };
+        });
+        if (updatedSettings.dataCollection) {
+          setDataCollection(dataCollections[updatedSettings.dataCollection]);
+        }
 
-      setReferenceElement(null);
-      setLocationDetails(null);
-    }
-  }, [setSettings]);
-
-  // Set up the locately popover events
-  useEffect(() => {
-    document.body.addEventListener("click", itemClicked);
-
-    return () => {
-      document.body.removeEventListener("click", itemClicked);
-    };
-  }, [itemClicked, dataCollection]);
-
-  const itemClicked = useCallback(
-    (event) => {
-      const popoverNode = document.querySelector('.locately-wrapper');
-
-      const city =
-        event.target.attributes.getNamedItem("data-locately-city")?.value;
-      const state = event.target.attributes.getNamedItem(
-        "data-locately-state"
-      )?.value;
-      if (city && state) {
-        // Set the reference element to position popper
-        setReferenceElement(event.target);
-
-        // Get location details and call setLocationDetails
-        getDetailsForLocation({ city, state });
-      } else if (!popoverNode.contains(event.target)) {
-        // Prevents popover from closing if you click inside it
         setReferenceElement(null);
         setLocationDetails(null);
       }
     },
-    [dataCollection, settings]
+    [setSettings]
+  );
+
+  // Set up the locately popover events
+  useEffect(() => {
+    document.body.addEventListener(
+      settings?.triggerOn || defaultSettings.triggerOn,
+      itemClicked
+    );
+
+    return () => {
+      document.body.removeEventListener(
+        settings?.triggerOn || defaultSettings.triggerOn,
+        itemClicked
+      );
+    };
+  }, [settings?.triggerOn, itemClicked, dataCollection]);
+
+  const itemClicked = debounce(
+    useCallback(
+      (event) => {
+        const popoverNode = document.querySelector(".locately-wrapper");
+
+        const city =
+          event.target.attributes.getNamedItem("data-locately-city")?.value;
+        const state = event.target.attributes.getNamedItem(
+          "data-locately-state"
+        )?.value;
+        if (city && state) {
+          // Set the reference element to position popper
+          setReferenceElement(event.target);
+
+          // Get location details and call setLocationDetails
+          getDetailsForLocation({ city, state });
+        } else if (!popoverNode.contains(event.target)) {
+          // Prevents popover from closing if you click inside it
+          setReferenceElement(null);
+          setLocationDetails(null);
+        }
+      },
+      [dataCollection, settings]
+    ),
+    50
   );
 
   // Detect dom changes so we can search the text

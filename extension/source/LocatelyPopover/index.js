@@ -12,6 +12,7 @@ import { abrevCount } from "../utils";
 // App components
 
 // Third-party components (buttons, icons, etc.)
+import Skeleton from "react-loading-skeleton";
 
 // JSON
 
@@ -22,17 +23,20 @@ const LocatelyPopover = ({
   referenceElement,
   locationDetails,
   dataCollection,
-  userSettings
+  userSettings,
 }) => {
   const [popperElement, setPopperElement] = useState(null);
-  const { styles, attributes, update } = usePopper(referenceElement, popperElement);
+  const { styles, attributes, update } = usePopper(
+    referenceElement,
+    popperElement
+  );
 
   // Fix position of popper when content loads
   useEffect(() => {
     if (referenceElement && locationDetails) {
-      update();
+      update && update();
     }
-  }, [referenceElement, locationDetails])
+  }, [referenceElement, locationDetails]);
 
   const renderHtml = (snippet) => {
     return { __html: snippet || "lorem ipsum..." };
@@ -69,50 +73,64 @@ const LocatelyPopover = ({
       }}
       {...attributes.popper}
     >
-      {locationDetails && referenceElement && (
+      {referenceElement && (
         <>
           <div className="locately-visual-row">
             <div className="locately-map">
-              <Map
-                place={locationDetails}
-                userSettings={userSettings}
-              />
+              {locationDetails ? (
+                <Map place={locationDetails} userSettings={userSettings} />
+              ) : (
+                <Skeleton height="150px" />
+              )}
             </div>
-            <a
-              href={`https://www.google.com/search?q=${locationDetails.features[0].attributes.AreaName},%20${locationDetails.features[0].attributes.MajorSubdivisionAbbr}&tbm=isch`}
-              target="_blank"
-              className="locately-img"
-            >
-              <img src={locationDetails.wpInfo.imageUrl} />
-            </a>
+            {locationDetails ? (
+              <a
+                href={`https://www.google.com/search?q=${locationDetails.features[0].attributes.AreaName},%20${locationDetails.features[0].attributes.MajorSubdivisionAbbr}&tbm=isch`}
+                target="_blank"
+                className="locately-img"
+              >
+                <img src={locationDetails.wpInfo.imageUrl} />
+              </a>
+            ) : (
+              <Skeleton height="150px" />
+            )}
           </div>
           <div className="locately-description">
-            <span
-              dangerouslySetInnerHTML={renderHtml(
-                locationDetails.wpInfo.snippet
-              )}
-            />
-            <span>
-              ...{" "}
-              <span className="locately-attribution">
-                —{" "}
-                <a href={locationDetails.wpInfo.pageUrl} target="_blank">
-                  Wikipedia
-                </a>
-              </span>
-            </span>
+            {locationDetails ? (
+              <>
+                <span
+                  dangerouslySetInnerHTML={renderHtml(
+                    locationDetails.wpInfo.snippet
+                  )}
+                />
+                <span>
+                  ...{" "}
+                  <span className="locately-attribution">
+                    —{" "}
+                    <a href={locationDetails.wpInfo.pageUrl} target="_blank">
+                      Wikipedia
+                    </a>
+                  </span>
+                </span>
+              </>
+            ) : (
+              <Skeleton count={7} />
+            )}
           </div>
           <div className="locately-stats-row">
-            {dataCollection.attributes.map((attrConfig) => {
-              const value = getAttrValue(attrConfig);
-              if (!value) return;
-              return (
-                <div className="locately-stat" key={attrConfig.name}>
-                  <div className="locately-stat-label">{attrConfig.label}</div>
-                  <div className="locately-stat-value">{value}</div>
-                </div>
-              );
-            })}
+            {locationDetails &&
+              dataCollection.attributes.map((attrConfig) => {
+                const value = getAttrValue(attrConfig);
+                if (!value) return;
+                return (
+                  <div className="locately-stat" key={attrConfig.name}>
+                    <div className="locately-stat-label">
+                      {attrConfig.label}
+                    </div>
+                    <div className="locately-stat-value">{value}</div>
+                  </div>
+                );
+              })}
           </div>
         </>
       )}
